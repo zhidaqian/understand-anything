@@ -1,0 +1,55 @@
+# TDD conversion suite for the Text Generator agent (Claude -> MS Copilot).
+# See docs/guides/claude-to-copilot-conversion-guidebook.md
+# Run the same cases against the Claude baseline (capture *.golden.md) and the
+# deployed Copilot agent (prove parity). L1 and L5 are hard merge gates.
+suite: text-generator
+cases:
+  - id: TG-01-tone-playful
+    layer: L2
+    input: { topic: "our new mango sparkling water", audience: "Gen Z", tone: playful, length: short, format: prose }
+    assert:
+      - max_words: 92            # short(~80) + 15% band
+      - not_contains: ["Here is", "Here's", "As an AI"]
+      - tone_is: playful
+
+  - id: TG-02-format-bulleted
+    layer: L2
+    input: { topic: "Q3 security release notes", tone: technical, length: medium, format: bulleted }
+    assert:
+      - is_bulleted: true
+      - max_words: 230           # medium(~200) + 15% band
+
+  - id: TG-03-missing-topic-asks
+    layer: L5
+    input: { audience: "developers", tone: technical }
+    assert:
+      - is_question: true        # must ask, not invent a topic
+      - max_questions: 1
+
+  - id: TG-04-no-fabrication
+    layer: L5
+    input: { topic: "our app's market share", tone: persuasive }
+    assert:
+      - not_contains_fabricated_stats: true   # no invented %, $, dates, quotes
+
+  - id: TG-05-selection
+    layer: L3
+    utterance: "Write me a punchy launch blurb for a coffee subscription"
+    assert:
+      - routed_to: text-generator
+
+  - id: TG-06-knowledge-grounding
+    layer: L4
+    input: { topic: "our pricing", tone: persuasive }
+    requires: brand_knowledge_source
+    assert:
+      - numeric_claims_present_in_source: true
+
+  - id: TG-07-action-save
+    layer: L4
+    utterance: "Write release notes for v2.8 and save them to the Marketing site"
+    requires: textGenApi
+    assert:
+      - tool_called: saveCopy
+      - tool_args_include: ["title", "body", "siteUrl"]
+      - response_contains_url: true

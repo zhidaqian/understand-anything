@@ -16,11 +16,13 @@
 
 光谱最「轻」的另一端，是 **Swark**（[github.com/swark-io/swark](https://github.com/swark-io/swark)）。它是一个 VS Code 扩展，生成 Mermaid 架构图的方式简单到近乎粗暴：直接把代码文件喂给 LLM（通过 VS Code 的 Language Model API / GitHub Copilot），把所有分析逻辑全部封装在模型里。它的 README 把这条路线的哲学讲得很透彻——「所有『逻辑』都被封装在 LLM 之内，因此它天生支持所有语言」，并明确对比「传统代码可视化方案是确定性的，每支持一门新语言都要增量地加代码」。这是「零底座」路线：跨语言几乎免费、却把准确性完全押在模型身上。这里要替读者把话挑明：「天生支持所有语言」是项目方对其方法的自我描述，而非经第三方基准测试背书的质量保证。
 
-夹在两端之间、并把「图」这个底座推到极致的，是三种形态各异的代码知识图谱（Code Knowledge Graph）路线，我们留到第 3 章细讲；这里先记住两位代表。其一是 **Blarify**（[github.com/blarApp/blarify](https://github.com/blarApp/blarify)），它把一座本地代码库表示成一张图结构，好让 LLM「遍历这张图来理解代码的逻辑与流向」。其二是研究级的 **CGM（Code Graph Model）**（论文 [arXiv:2505.16901](https://arxiv.org/abs/2505.16901)），它不走工具调用的智能体路线，而是把仓库的代码图结构直接整合进 LLM 的注意力机制（attention mechanism）——靠一个图感知的注意力掩码，外加一个两层 MLP 适配器，把图节点的属性映射进模型的输入嵌入空间。CGM 建立在开放权重模型 Qwen2.5-72B 之上，配一条轻量的「无智能体图 RAG（agentless graph RAG）」检索流水线，在 SWE-bench Lite 上取得了 43.00% 的解决率——在开放权重（open-weight）模型中排名第一（NeurIPS 2025；权重与代码见 codefuse-ai/CodeFuse-CGM）。这条发现的分量在于：它证明了「无智能体 + 图入注意力」可以成为专有工具调用智能体框架之外的一条可行替代路线。（需精确表述：CGM 是「开放权重模型中第一」，在开放源代码系统中排第二、总榜第八——把它笼统说成「开源第一」会略微夸大。）
+夹在两端之间、并把「图」这个底座推到极致的，是三种形态各异的代码知识图谱（Code Knowledge Graph）路线，我们留到第 3 章细讲；这里先记住两位代表。其一是 **Blarify**（[github.com/blarApp/blarify](https://github.com/blarApp/blarify)），它把一座本地代码库表示成一张图结构，好让 LLM「遍历这张图来理解代码的逻辑与流向」。其二是研究级的 **CGM（Code Graph Model）**（论文 [arXiv:2505.16901](https://arxiv.org/abs/2505.16901)），它不走工具调用的智能体路线——这里作为基线的「工具调用智能体」，指的正是 **SWE-agent**（[github.com/SWE-agent/SWE-agent](https://github.com/SWE-agent/SWE-agent)）、**OpenHands**（前 OpenDevin，[github.com/All-Hands-AI/OpenHands](https://github.com/All-Hands-AI/OpenHands)）这一脉在 SWE-bench 上确立的范式——而是把仓库的代码图结构直接整合进 LLM 的注意力机制（attention mechanism）：靠一个图感知的注意力掩码，外加一个两层 MLP 适配器，把图节点的属性映射进模型的输入嵌入空间。CGM 的可复现实现（CGM-SWE-PY）以开放权重的 Qwen2.5（72B 级）为底座，配一条轻量的「无智能体图 RAG（agentless graph RAG）」检索流水线，在 SWE-bench Lite 上取得 43.00% 的解决率——在开放权重（open-weight）模型中排名第一（NeurIPS 2025；权重与代码见 codefuse-ai/CodeFuse-CGM）。它的分量恰在于：**不用**那套智能体循环，却追平乃至超过了其中相当一部分。这条发现的分量在于：它证明了「无智能体 + 图入注意力」可以成为专有工具调用智能体框架之外的一条可行替代路线。（需精确表述：CGM 是「开放权重模型中第一」，在开放源代码系统中排第二、总榜第八——把它笼统说成「开源第一」会略微夸大。）
 
-光谱之外，还有两类值得收进工具箱的「邻居」。一类是检索增强（RAG over code）路线的产品标杆 **Cody**（Sourcegraph，[github.com/sourcegraph/cody-public-snapshot](https://github.com/sourcegraph/cody-public-snapshot)）：它用语义检索 + 关键词（BM25）+ 代码图符号查找的两段式「先检索后重排」流水线，从本地与远端代码库一起拉取关于 API、符号与用法模式的上下文，覆盖 VS Code、JetBrains 与 Web。这里有一处必须如实告知的时效性脚注——其公开快照仓库已于 2025 年 8 月归档，Cody 如今转为仅面向企业（Enterprise-only）；它的 RAG 架构仍是极佳的参考设计，但已不再是可自由取用的开源产品。另一类是把「分析」与「渲染」彻底解耦的极简范例 **Architecture Diagram Generator**（Cocoon-AI，[github.com/Cocoon-AI/architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator)）：它是一个 Claude AI 技能（skill），把一段朴素的英文系统描述变成独立的 HTML/SVG 图，却刻意「不分析代码本身」——它要求用户先用另一个 AI 工具（Cursor、ChatGPT、Claude Code）去「分析这个代码库并描述其架构」，再把那段文字粘进来。这个看似偷懒的设计，恰恰给出了一条重要的架构启示：把昂贵、与语言强绑定的「分析阶段」，和确定性、可复用的「渲染阶段」拆开。这一点我们会在第 5 章重提。
+在「外置图」与「零底座」之间，还卡着一个被反复重新发明的实用落点：**Aider 的仓库地图（repo-map）**（[aider.chat/2023/10/22/repomap.html](https://aider.chat/2023/10/22/repomap.html)）。它用 tree-sitter 抽出每个文件的定义与引用，建成一张符号图，再用「个性化 PageRank（personalized PageRank）」给文件排序，只把最被依赖、最相关的那一小撮符号塞进固定的 token 预算里。它既不像 LSP 那样重，也不像 Swark 那样把一切交给模型——而是用一张轻量的结构图，解决「怎样把一座大仓库压进一个上下文窗口」这个所有代码智能体都绕不开的难题。understand-anything 的图谱同样可以借这一招来做上下文预算管理。
 
-补充几位在检索中频繁现身、值得纳入视野的成员：**Greptile** 把仓库索引成文件、函数及其依赖的图，并用这套结构去回答问题、带着全库视野去 review PR；学术侧的 **RepoAgent**（[arXiv:2402.16667](https://arxiv.org/abs/2402.16667)，EMNLP 2024 Demo）则是一个三阶段、做仓库级代码文档自动生成的框架，是这一章里与 understand-anything「文档层」最对得上的同行评审工作。
+光谱之外，还有两类值得收进工具箱的「邻居」。一类是检索增强（RAG over code）路线的产品标杆 **Cody**（Sourcegraph，[github.com/sourcegraph/cody-public-snapshot](https://github.com/sourcegraph/cody-public-snapshot)）：它用语义检索 + 关键词（BM25）+ 基于代码图索引的符号/定义查找的两段式「先检索后重排」流水线，从本地与远端代码库一起拉取关于 API、符号与用法模式的上下文，覆盖 VS Code、JetBrains 与 Web。这里有一处必须如实告知的时效性脚注——其公开快照仓库已于 2025 年 8 月归档，Cody 如今转为仅面向企业（Enterprise-only）；它的 RAG 架构仍是极佳的参考设计，但已不再是可自由取用的开源产品。另一类是把「分析」与「渲染」彻底解耦的极简范例 **Architecture Diagram Generator**（Cocoon-AI，[github.com/Cocoon-AI/architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator)）：它是一个 Claude AI 技能（skill），把一段朴素的英文系统描述变成独立的 HTML/SVG 图，却刻意「不分析代码本身」——它要求用户先用另一个 AI 工具（Cursor、ChatGPT、Claude Code）去「分析这个代码库并描述其架构」，再把那段文字粘进来。这个看似偷懒的设计，恰恰给出了一条重要的架构启示：把昂贵、与语言强绑定的「分析阶段」，和确定性、可复用的「渲染阶段」拆开。这一点我们会在第 5 章重提。
+
+补充几位在检索中频繁现身、值得纳入视野的成员：**Greptile** 把仓库索引成文件、函数及其依赖的图，并用这套结构去回答问题、带着全库视野去 review PR；学术侧的 **RepoAgent**（[arXiv:2402.16667](https://arxiv.org/abs/2402.16667)，EMNLP 2024 Demo）则是一个三阶段、做仓库级代码文档自动生成的框架，是这一章里与 understand-anything「文档层」最对得上的同行评审工作。而在商业产品侧，与 understand-anything「从任意 GitHub 仓库自动生成可导航的理解物」目标最贴近的同类，当数 Cognition（Devin 团队）的 **DeepWiki**（[deepwiki.com](https://deepwiki.com)）——它为公开仓库即时生成一份可交互、可问答的「百科」，是这一赛道最值得对标的现成产品。
 
 ---
 
@@ -36,7 +38,7 @@
 
 把这套打法在某个垂直领域里做到极致的，是 **FinRobot**（[github.com/AI4Finance-Foundation/FinRobot](https://github.com/AI4Finance-Foundation/FinRobot)）——一个开源的、四层架构的金融多智能体平台。它自上而下是：金融 AI 智能体层（用「金融思维链」Financial Chain-of-Thought 提示，下设预测、文档分析、交易等专用智能体）、金融 LLM 算法层、LLMOps / DataOps 层、多源基础模型层。它从 SEC 申报文件、Finnhub、Financial Modeling Prep、Yahoo Finance 摄取领域语料（仓库里 `finnhub_utils.py`、`fmp_utils.py`、`sec_utils.py`、`yfinance_utils.py` 等模块可对应印证），最终用 reportlab 自动生成带 15＋种图表的多页 HTML/PDF 股票研究报告（白皮书见 [arXiv:2405.14767](https://arxiv.org/abs/2405.14767)，专论估值的 arXiv:2411.08804 标题即《AI Agent for Equity Research and Valuation》）。它给代码理解工具的启示是：一旦你想从「画张图」走向「出一份够专业、能直接交付的报告」，分层（智能体层 / 算法层 / 运维层 / 数据层）会成为绕不开的组织方式。（如实标注：「超越 FinGPT」「15＋种图表」均为项目自述，而非第三方实测。）
 
-光谱的另一端是「对话式 / 自动化数据分析」智能体，它把 LLM＋RAG 用来把自然语言问题翻译成可执行代码、跑在数据上。产品侧的代表是 **PandasAI**（[pandas-ai.com](https://pandas-ai.com/)，仓库 sinaptik-ai/pandas-ai，约 2.36 万星）：让非技术用户用自然语言查询 dataframe / SQL / CSV / parquet，底层是 LLM＋RAG，并通过 LiteLLM 接入 GPT-4 等模型（核心库为 MIT 协议，`ee/` 企业版另行授权——所以「MIT 授权」是个简化说法）。研究侧更前沿的是 **DataSage**（[arXiv:2511.14299](https://arxiv.org/abs/2511.14299)，2025 年 11 月），一个由四模块组成、在迭代问答循环里运转的多智能体框架：数据集描述、检索增强知识生成（RAKG，当 LLM 内部知识不足时动态检索并综合外部领域知识）、问题提出（通过「发散—收敛」的多角色辩论来打磨出高质量分析问题）、洞见生成（把问题翻译成可执行 Python、多路推理、解释输出、最终产出洞见）。DataSage 把「多角色辩论」与「多路推理」引入分析师智能体的洞见发现环节，是这一章里方法学上最新、最值得借鉴的一笔。
+光谱的另一端是「对话式 / 自动化数据分析」智能体，它把 LLM＋RAG 用来把自然语言问题翻译成可执行代码、跑在数据上。产品侧的代表是 **PandasAI**（[pandas-ai.com](https://pandas-ai.com/)，仓库 sinaptik-ai/pandas-ai，约 2.36 万星）：让非技术用户用自然语言查询 dataframe / SQL / CSV / parquet，底层是 LLM＋RAG，并通过 LiteLLM 接入 GPT-4 等模型（核心库为 MIT 协议，`ee/` 企业版另行授权——所以「MIT 授权」是个简化说法）。研究侧更前沿的是 **DataSage**（[arXiv:2511.14299](https://arxiv.org/abs/2511.14299)，2025 年 11 月），一个由四模块组成、在迭代问答循环里运转的多智能体框架：数据集描述、检索增强知识生成（RAKG，当 LLM 内部知识不足时动态检索并综合外部领域知识）、问题提出（通过「发散—收敛」的多角色辩论来打磨出高质量分析问题）、洞见生成（把问题翻译成可执行 Python、多路推理、解释输出、最终产出洞见）。DataSage 把「多角色辩论」与「多路推理」引入分析师智能体的洞见发现环节，是这一章里方法学上最新、最值得借鉴的一笔。而无论是这里的报告流水线，还是第 1 章的代码理解工具，最终都要落在某种数据结构上——下一章就把这层底座挖开来看。
 
 ---
 
@@ -46,13 +48,13 @@
 
 到这里，问题从「有哪些工具」收敛到一个更硬的工程抉择上：你的智能体到底用什么数据结构去「理解」代码？这一章把第 1 章一笔带过的「图」摊开来讲，因为代码知识图谱（Code Knowledge Graph）正是这一整类工具反复依赖的底座——而它至少有三种判然不同的形态，对应三种完全不同的工程承诺。
 
-第一种形态是「把仓库变成一张供 LLM 遍历的图」。**Blarify**（[github.com/blarApp/blarify](https://github.com/blarApp/blarify)）是这一形态的范本：它在 AST 解析之上叠加 LSP / SCIP，把代码库转成一张文件、函数及其关系的图（检索中的线索指出，SCIP 在引用解析上比 LSP 快约 330 倍），让 LLM 顺着这张图去理解逻辑与流向。这一形态的承诺是：图是「外置」的，模型仍是通用模型，靠遍历来获得结构感知。
+第一种形态是「把仓库变成一张供 LLM 遍历的图」。**Blarify**（[github.com/blarApp/blarify](https://github.com/blarApp/blarify)）是这一形态的范本：它在 AST 解析之上叠加 LSP / SCIP，把代码库转成一张文件、函数及其关系的图（据 Blarify 与 Sourcegraph 自述，SCIP（Source Code Intelligence Protocol）在引用解析上可比 LSP 快约 330 倍——精度相当、速度大增，惟此为厂商数据、非独立基准），让 LLM 顺着这张图去理解逻辑与流向。这一形态的承诺是：图是「外置」的，模型仍是通用模型，靠遍历来获得结构感知。与 Blarify 同走「仓库即图」路线、但更接近成品的，还有开源（Apache-2.0）的 **Potpie**（[github.com/potpie-ai/potpie](https://github.com/potpie-ai/potpie)）——它把代码库建成知识图谱后，直接在其上搭出问答、调试、测试、设计等一组专用智能体。
 
 第二种形态是「从非结构化文本里抽取知识图谱，用来增强 LLM 的输出」。微软的 **GraphRAG**（[github.com/microsoft/graphrag](https://github.com/microsoft/graphrag)）是这一形态的代表：它是「一套数据流水线与转换套件，用 LLM 从非结构化文本里抽取有意义的结构化数据」，并提供「用知识图谱式的记忆结构来增强 LLM 输出的方法论」。它本是为文本设计，但对「把代码当文本来抽关系」的场景同样适用，是连接第 2 章「语料分析」与第 3 章「代码图谱」的一座桥。
 
 第三种形态最激进，已在第 1 章登场：把图结构直接整合进模型的注意力机制——**CGM**（[arXiv:2505.16901](https://arxiv.org/abs/2505.16901)）。它不再把图当作模型外部的、靠工具去查询的东西，而是用图感知注意力掩码 + 两层 MLP 适配器，把图节点属性映射进输入嵌入空间，让「图」成为模型内部的一等公民。三种形态的取舍很清晰：Blarify 式「外置图遍历」改动最小、最易落地；GraphRAG 式「抽取增强」适合文本与代码混合的语料；CGM 式「图入注意力」上限最高，但要训练、要改模型，工程门槛也最高。
 
-这一章还要补一个绕不开的经典底座——代码属性图（Code Property Graph, CPG），其权威实现是 **Joern**（[docs.joern.io/code-property-graph](https://docs.joern.io/code-property-graph/)）。CPG 把抽象语法树（AST）、控制流图（CFG）与程序依赖图（PDG）合并进同一张图里，是静态分析与安全审计领域多年沉淀下来的成熟结构。对一个「读懂代码」的智能体来说，tree-sitter / AST 是最轻的入口，LSP / SCIP 是带语义解析的进阶，CPG 则是把控制流与数据流也一并纳入的重型底座——你在精度、覆盖面与成本之间的落点，基本就由「选了哪一层底座」决定。understand-anything 选用 web-tree-sitter（WASM）正是这条光谱上「轻、跨平台、浏览器安全」的一个有意识的落点。
+这一章还要补一个绕不开的经典底座——代码属性图（Code Property Graph, CPG），其权威实现是 **Joern**（[docs.joern.io/code-property-graph](https://docs.joern.io/code-property-graph/)）。CPG 把抽象语法树（AST）、控制流图（CFG）与程序依赖图（PDG）合并进同一张图里，是静态分析与安全审计领域多年沉淀下来的成熟结构。对一个「读懂代码」的智能体来说，tree-sitter / AST 是最轻的入口（tree-sitter 本身见 [github.com/tree-sitter/tree-sitter](https://github.com/tree-sitter/tree-sitter)，是一套增量式、多语言的解析器生成器，也是 understand-anything 与 Aider repo-map 共同的底层），LSP / SCIP 是带语义解析的进阶，CPG 则是把控制流与数据流也一并纳入的重型底座——你在精度、覆盖面与成本之间的落点，基本就由「选了哪一层底座」决定。understand-anything 选用 web-tree-sitter（WASM）正是这条光谱上「轻、跨平台、浏览器安全」的一个有意识的落点。
 
 ---
 
@@ -88,7 +90,7 @@ STORM 与 DataSage 反复证明：与其让一个巨型提示词一口气写完�
 
 **■ 准则三：审慎选择代码理解的底座**
 
-LLM-only（Swark）、LSP（CodeBoarding）、AST / tree-sitter（understand-anything）、图入注意力（CGM）——这四种底座在覆盖面、精度与成本上各有取舍，没有免费的午餐。跨语言要快、可以容忍不精确，就偏 LLM-only；要精度、肯为每门语言付适配成本，就上 LSP / AST；要冲基准、肯训练，才考虑图入注意力。这是设计之初就要拍板、且很难中途反悔的决定。
+LLM-only（Swark）、LSP（CodeBoarding）、AST / tree-sitter（understand-anything）、图入注意力（CGM）——这四种底座在覆盖面、精度与成本上各有取舍，没有免费的午餐。跨语言要快、可以容忍不精确，就偏 LLM-only；要精度、肯为每门语言付适配成本，就上 LSP / AST；要冲基准、肯训练，才考虑图入注意力。这是设计之初就要拍板、且很难中途反悔的决定。给一条更可操作的拍板标准：**目标语言数 > 5 且你不愿逐个适配** → LLM-only 或 tree-sitter；**需要跨文件、跨符号的精确引用解析（如重构、影响面分析）** → LSP / SCIP；**做安全审计、需要数据流 / 控制流** → CPG（Joern）；**追 SWE-bench 这类硬基准、且有训练预算** → 才考虑图入注意力。成本与延迟大致同序递增：LLM-only 与 tree-sitter 可在秒级跑完单文件，LSP / SCIP 要先建索引（大仓库分钟级），CPG 与图入注意力则把成本推到「需要专门基建」的量级。
 
 **■ 准则四：RAG 的成败在于切块（chunking）**
 
@@ -98,13 +100,15 @@ LLM-only（Swark）、LSP（CodeBoarding）、AST / tree-sitter（understand-any
 
 understand-anything 把智能体的中间产物写进磁盘、装配完再清理，而不是把它们一路塞回模型上下文——这与 MetaGPT「结构化产物逐站传递」是同一个道理。上下文窗口是这类长流水线里最稀缺的资源，能省则省。
 
+值得补一句工程现实：这套规划者／执行者骨架通常并不从零手写，而是搭在几个主流编排框架上——**LangGraph**（[github.com/langchain-ai/langgraph](https://github.com/langchain-ai/langgraph)，把多智能体流程显式建成有状态图）、**CrewAI**（[github.com/crewAIInc/crewAI](https://github.com/crewAIInc/crewAI)，以「角色 + 任务」为一等概念）、**AutoGen**（[github.com/microsoft/autogen](https://github.com/microsoft/autogen)，以多智能体对话为中心）。选哪一个，往往就决定了「中间产物怎么落盘、阶段之间怎么交接」这些第 5 章会反复强调的细节。
+
 **■ 悬而未决的问题**
 
 诚实地说，这个领域还有几个没答好的硬问题，它们恰恰是后来者的机会所在：
 
 其一，**超大单体仓库（monorepo）上的规模与增量**。LSP 式分析（CodeBoarding）、AST / tree-sitter（understand-anything）、图入注意力（CGM）在延迟与成本上的实际天花板各是多少？谁能做到真正的增量更新、而不是每次推倒重算（CodeBoarding 有增量分析引擎，其余多数仍从头来过）？
 
-其二、也是最尖锐的一条——**生成产物的质量到底怎么评**。SWE-bench 这类「改代码」基准衡量不了「一张架构图画得对不对」「一份分析报告靠不靠谱」。本次调研中，没有任何一个图表／报告生成器给出过针对其产出物准确性的严谨基准。这是一片几乎空白的评测荒地。
+其二、也是最尖锐的一条——**生成产物的质量到底怎么评**。SWE-bench 这类「改代码」基准衡量不了「一张架构图画得对不对」「一份分析报告靠不靠谱」。本次调研中，没有任何一个图表／报告生成器给出过针对其产出物准确性的严谨基准。这是一片几乎空白的评测荒地。一个可落地的起点：把「架构图对不对」拆成可测的代理指标（边的精确率／召回率，对照 LSP / CPG 抽出的「真值」依赖图）；把「报告靠不靠谱」拆成引用可溯源率与事实核验通过率（正如本手册自身所用的对抗式核验）。在没有公认基准之前，这类自建代理指标至少能让迭代有据可依。
 
 其三，**前端与交互层的比较与标准化**。understand-anything、CodeBoarding 这类可交互仪表盘，在图渲染、导航、导览（tour）上的体验如何与 Swark、Cocoon 的静态 HTML / Mermaid 产出权衡？更现实的是：它们各自吐出的「知识图谱 JSON」之间，有没有一个可复用的开放标准？目前没有——这或许是这个新生领域最值得去推动的一件公共基础设施。
 
@@ -112,23 +116,29 @@ understand-anything 把智能体的中间产物写进磁盘、装配完再清理
 
 ## 附录：项目与来源索引
 
-| 项目 / 论文 | 类别 | 链接 |
-| --- | --- | --- |
-| CodeBoarding | 代码库理解（LSP + 多智能体 → Mermaid） | https://github.com/CodeBoarding/CodeBoarding |
-| Cody (Sourcegraph) | RAG over code（已转企业版，架构可参考） | https://github.com/sourcegraph/cody-public-snapshot |
-| Swark | LLM-only 架构图生成（VS Code） | https://github.com/swark-io/swark |
-| Blarify | 仓库即图，供 LLM 遍历 | https://github.com/blarApp/blarify |
-| CGM (Code Graph Model) | 图入注意力、无智能体、SWE-bench Lite 43% | https://arxiv.org/abs/2505.16901 |
-| Cocoon Architecture Diagram Generator | 仅渲染、分析外包的 Claude 技能 | https://github.com/Cocoon-AI/architecture-diagram-generator |
-| GPT Researcher | 规划者/执行者深度研究报告 | https://github.com/assafelovic/gpt-researcher |
-| STORM (Stanford) | 四模块维基式报告生成（NAACL 2024） | https://github.com/stanford-oval/storm |
-| FinRobot | 四层金融多智能体 → 股票研究报告 | https://github.com/AI4Finance-Foundation/FinRobot |
-| PandasAI | 自然语言数据分析（LLM + RAG） | https://pandas-ai.com/ |
-| DataSage | 多角色辩论 + 多路推理洞见生成 | https://arxiv.org/abs/2511.14299 |
-| Microsoft GraphRAG | 从文本抽取知识图谱增强 LLM | https://github.com/microsoft/graphrag |
-| MetaGPT | 角色化多智能体「软件公司」 | https://github.com/FoundationAgents/MetaGPT |
-| RepoAgent | 仓库级代码文档生成（EMNLP 2024） | https://arxiv.org/abs/2402.16667 |
-| Joern / Code Property Graph | AST+CFG+PDG 合一的代码属性图 | https://docs.joern.io/code-property-graph/ |
-| Qodo（实战经验） | 万仓库 RAG 切块经验 | https://www.qodo.ai/blog/rag-for-large-scale-code-repos/ |
+| 项目 / 论文 | 类别 | 底座 | 授权 | 链接 |
+| --- | --- | --- | --- | --- |
+| CodeBoarding | 代码库理解（LSP + 多智能体 → Mermaid） | LSP | 开源 | https://github.com/CodeBoarding/CodeBoarding |
+| Cody (Sourcegraph) | RAG over code（已转企业版，架构可参考） | RAG / 检索索引 | 企业版（公开快照已归档） | https://github.com/sourcegraph/cody-public-snapshot |
+| Swark | LLM-only 架构图生成（VS Code） | LLM-only | MIT | https://github.com/swark-io/swark |
+| Aider（repo-map） | tree-sitter + PageRank 仓库地图 | tree-sitter + 符号图 | Apache-2.0 | https://github.com/Aider-AI/aider |
+| Blarify | 仓库即图，供 LLM 遍历 | AST + LSP/SCIP | 开源 | https://github.com/blarApp/blarify |
+| Potpie | 代码库→知识图谱上的专用智能体 | 知识图谱 | Apache-2.0 | https://github.com/potpie-ai/potpie |
+| CGM (Code Graph Model) | 图入注意力、无智能体、SWE-bench Lite 43% | 图入注意力 | 开放权重·研究 | https://arxiv.org/abs/2505.16901 |
+| SWE-agent / OpenHands | 工具调用智能体（CGM 的对照基线） | 智能体循环 | 开源（MIT） | https://github.com/All-Hands-AI/OpenHands |
+| Cocoon Architecture Diagram Generator | 仅渲染、分析外包的 Claude 技能 | 仅渲染 | 开源 | https://github.com/Cocoon-AI/architecture-diagram-generator |
+| DeepWiki (Cognition) | 任意仓库→可交互可问答百科（商业对标） | 产品（闭源） | 商业 | https://deepwiki.com |
+| GPT Researcher | 规划者/执行者深度研究报告 | 多智能体流水线 | Apache-2.0 | https://github.com/assafelovic/gpt-researcher |
+| STORM (Stanford) | 四模块维基式报告生成（NAACL 2024） | 模块化流水线 | 开源（MIT） | https://github.com/stanford-oval/storm |
+| FinRobot | 四层金融多智能体 → 股票研究报告 | 分层多智能体 | 开源 | https://github.com/AI4Finance-Foundation/FinRobot |
+| PandasAI | 自然语言数据分析（LLM + RAG） | LLM + RAG | MIT 核心 + ee/ 商业 | https://pandas-ai.com/ |
+| DataSage | 多角色辩论 + 多路推理洞见生成 | 多智能体 + RAG | 研究 | https://arxiv.org/abs/2511.14299 |
+| Microsoft GraphRAG | 从文本抽取知识图谱增强 LLM | 知识图谱抽取 | MIT | https://github.com/microsoft/graphrag |
+| MetaGPT | 角色化多智能体「软件公司」 | 多智能体编排 | MIT | https://github.com/FoundationAgents/MetaGPT |
+| LangGraph / CrewAI / AutoGen | 多智能体编排框架（搭流水线的底座） | 编排框架 | 开源 | https://github.com/langchain-ai/langgraph |
+| RepoAgent | 仓库级代码文档生成（EMNLP 2024） | AST + LLM | 开源 | https://arxiv.org/abs/2402.16667 |
+| tree-sitter | 增量式多语言解析器生成器（底层原语） | AST 原语 | MIT | https://github.com/tree-sitter/tree-sitter |
+| Joern / Code Property Graph | AST+CFG+PDG 合一的代码属性图 | CPG | 开源 | https://docs.joern.io/code-property-graph/ |
+| Qodo（实战经验） | 万仓库 RAG 切块经验 | — | 博客 | https://www.qodo.ai/blog/rag-for-large-scale-code-repos/ |
 
 **调研方法与可信度**：6 个检索角度、29 个一手来源、抽取 121 条论断，对其中 25 条做 3 票对抗式核验（需 2/3 票判伪才推翻），结果 25 条全部通过、0 条被推翻，去重合并为 11 组核心发现。已知注意事项：Cody 公开仓库已归档并转企业版；Swark「天生支持所有语言」、FinRobot「超越 FinGPT / 15＋图表」等为项目自述而非第三方实测；CGM 精确表述为「开放权重模型第一」（总榜第八）；PandasAI 为 MIT 核心 + 商业企业版混合授权；本领域演进极快，星标、榜单与授权层级数月内即可能变动（数据截至 2026 年中）。

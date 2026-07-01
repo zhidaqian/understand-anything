@@ -10,6 +10,7 @@
 
 - [1. 什么是 Codex](#1-什么是-codex)
 - [2. 安装与登录](#2-安装与登录)
+- [🪟 在 Windows 上使用 Codex](#-在-windows-上使用-codex)
 - [3. 快速开始](#3-快速开始)
 - [4. 审批模式与绕过权限](#4-审批模式与绕过权限)
 - [5. 仓库结构约定](#5-仓库结构约定)
@@ -37,12 +38,20 @@ Codex CLI 是 OpenAI 推出的命令行编码智能体（coding agent）。它�
 ### 安装
 
 ```bash
-# 通过 npm 全局安装
+# 通过 npm 全局安装（macOS / Linux / Windows 通用）
 npm install -g @openai/codex
 
 # 或使用 Homebrew（macOS）
 brew install codex
 ```
+
+**Windows（PowerShell）** 同样用 npm 安装即可：
+
+```powershell
+npm install -g @openai/codex
+```
+
+> Windows 用户请特别留意下面的 [Windows 专区](#-在-windows-上使用-codex)——沙箱行为、配置路径与命令写法都和 macOS/Linux 不同。
 
 安装后验证：
 
@@ -60,8 +69,87 @@ codex login
 按提示在浏览器中完成 OAuth 授权，或使用 API Key：
 
 ```bash
+# macOS / Linux（bash/zsh）
 export OPENAI_API_KEY="sk-..."
 ```
+
+```powershell
+# Windows PowerShell —— 仅当前会话
+$env:OPENAI_API_KEY = "sk-..."
+
+# Windows —— 永久写入用户环境变量（新开终端生效）
+setx OPENAI_API_KEY "sk-..."
+```
+
+---
+
+## 🪟 在 Windows 上使用 Codex
+
+Codex CLI 可以在 Windows 上运行，但**沙箱与部分行为和 macOS/Linux 有明显差异**，这也是很多 Windows 用户踩坑的地方。请重点阅读本节。
+
+### 两条路线：原生 Windows vs. WSL2
+
+| 路线 | 说明 | 建议场景 |
+|------|------|----------|
+| **原生 Windows（PowerShell）** | 直接在 PowerShell 里 `npm install -g @openai/codex` 后使用。上手最快。 | 快速试用、简单任务 |
+| **WSL2（推荐）** | 在 Windows 里装 Ubuntu 子系统，在 Linux 环境中跑 Codex，可获得**完整的沙箱隔离**与最接近官方测试的体验。 | 日常开发、需要沙箱防护 |
+
+> ⚠️ **关键差异：沙箱**
+> Codex 的操作系统级沙箱（Linux 上的 Landlock/seccomp、macOS 上的 seatbelt）在**原生 Windows 上并不完全等价**。也就是说，在原生 Windows 下 `workspace-write` 的隔离强度不如 Linux/macOS。若你需要真正的沙箱防护，请走 **WSL2**。
+
+### 启用 WSL2（一次性）
+
+以管理员身份打开 PowerShell：
+
+```powershell
+wsl --install
+```
+
+重启后进入 Ubuntu，在 Linux 环境里安装 Node.js 与 Codex，然后**在 WSL 里**打开你的项目目录使用 Codex。注意：把项目放在 WSL 文件系统（如 `~/project`）里，比放在 `/mnt/c/...` 的 Windows 盘上性能更好。
+
+### Windows 上的路径与命令对照
+
+| 事项 | macOS / Linux | 原生 Windows（PowerShell） |
+|------|---------------|-----------------------------|
+| 配置文件 | `~/.codex/config.toml` | `%USERPROFILE%\.codex\config.toml`（即 `C:\Users\你\.codex\config.toml`） |
+| 设置临时环境变量 | `export KEY=val` | `$env:KEY = "val"` |
+| 设置永久环境变量 | 写入 `~/.zshrc` 等 | `setx KEY "val"` |
+| 当前目录变量 | `$PWD` | `$PWD` 或 `${PWD}`（PowerShell 也支持） |
+| 路径分隔符 | `/` | `\`（但多数工具也接受 `/`） |
+
+### 在 PowerShell 里绕过权限（隔离环境下）
+
+命令本身跨平台一致，只是引号/续行风格按 PowerShell 来：
+
+```powershell
+codex --full-auto "重构该模块并让所有测试通过"
+
+# YOLO 模式——务必在受控环境中使用
+codex --dangerously-bypass-approvals-and-sandbox "升级依赖并修复破坏性变更"
+```
+
+> 由于原生 Windows 沙箱较弱，**在 Windows 上使用 `--dangerously-bypass-approvals-and-sandbox` 风险更高**。强烈建议改在 WSL2、或 Windows 上的 Docker Desktop 容器里运行此类高权限任务。
+
+### 用 install.ps1 安装 Understand-Anything（Windows）
+
+本仓库为 Windows 提供了 PowerShell 安装脚本：
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/Lum1104/Understand-Anything/main/install.ps1 | iex
+```
+
+如果走 WSL2 路线，则在 WSL 的 Ubuntu 里改用 bash 版脚本：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Lum1104/Understand-Anything/main/install.sh | bash -s codex
+```
+
+### Windows 常见坑
+
+- **PowerShell 执行策略**：若脚本被拦，运行 `Set-ExecutionPolicy -Scope Process RemoteSigned` 临时放行当前会话。
+- **换行符**：Windows 的 `CRLF` 可能影响 shell 脚本；仓库里 `.gitattributes` 或 `git config core.autocrlf` 需按需设置。
+- **长路径**：启用 Windows 长路径支持（`git config --system core.longpaths true`）可避免深层 `node_modules` 报错。
+- **找不到 `codex` 命令**：确认 npm 全局 bin 目录（`npm config get prefix`）已加入 `PATH`，然后新开一个终端。
 
 ---
 
@@ -229,7 +317,7 @@ coverage/
 
 ## 6. 配置文件 config.toml
 
-全局配置位于 `~/.codex/config.toml`。用它设定默认模型、审批/沙箱策略、profile、MCP 服务器等。
+全局配置位于 `~/.codex/config.toml`（Windows 为 `%USERPROFILE%\.codex\config.toml`）。用它设定默认模型、审批/沙箱策略、profile、MCP 服务器等。
 
 ```toml
 # 默认模型
@@ -368,6 +456,9 @@ A：认真写 `AGENTS.md`（第 5 节），把技术栈、目录、命令、禁�
 
 **Q：只想让它读代码、不改文件？**
 A：`codex --sandbox read-only`，或使用只读的 `review` profile。
+
+**Q：我在 Windows 上用，需要注意什么？**
+A：见 [Windows 专区](#-在-windows-上使用-codex)。要点：原生 Windows 沙箱较弱，需要真正隔离请走 **WSL2**；环境变量用 `$env:` / `setx`；配置在 `%USERPROFILE%\.codex\config.toml`；高权限任务尽量放进 WSL 或 Docker 容器里跑。
 
 ---
 

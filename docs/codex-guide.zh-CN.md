@@ -10,14 +10,15 @@
 
 - [1. 什么是 Codex](#1-什么是-codex)
 - [2. 安装与登录](#2-安装与登录)
-- [🪟 在 Windows 上使用 Codex](#-在-windows-上使用-codex)
+- [🖥️ Codex 桌面应用（App）](#-codex-桌面应用app)
 - [3. 快速开始](#3-快速开始)
 - [4. 审批模式与绕过权限](#4-审批模式与绕过权限)
 - [5. 仓库结构约定](#5-仓库结构约定)
 - [6. 配置文件 config.toml](#6-配置文件-configtoml)
 - [7. 与 Understand-Anything 集成](#7-与-understand-anything-集成)
 - [8. 高效工作流技巧与循环用法](#8-高效工作流技巧与循环用法)
-- [9. 常见问题](#9-常见问题)
+- [9. 用例：用提示词把一切自动化](#9-用例用提示词把一切自动化)
+- [10. 常见问题](#10-常见问题)
 
 ---
 
@@ -29,7 +30,7 @@ Codex CLI 是 OpenAI 推出的命令行编码智能体（coding agent）。它�
 - 自主编辑文件、运行命令、执行测试；
 - 在沙箱（sandbox）中安全地完成多步骤任务。
 
-与在浏览器里聊天不同，Codex 直接在你的本地项目上工作，因此**权限（审批）**与**仓库结构约定**是使用它的两个核心概念。
+与在浏览器里聊天不同，Codex 直接在你的本地项目上工作，因此**权限**（审批）与**仓库结构约定**是使用它的两个核心概念。
 
 ---
 
@@ -51,7 +52,7 @@ brew install codex
 npm install -g @openai/codex
 ```
 
-> Windows 用户请特别留意下面的 [Windows 专区](#-在-windows-上使用-codex)——沙箱行为、配置路径与命令写法都和 macOS/Linux 不同。
+> Windows 用户推荐直接用 [Codex 桌面应用](#-codex-桌面应用app)——图形界面、ChatGPT 账号登录，沙箱与权限都由应用托管，最省心。
 
 安装后验证：
 
@@ -66,90 +67,48 @@ codex --help
 codex login
 ```
 
-按提示在浏览器中完成 OAuth 授权，或使用 API Key：
+按提示在浏览器中用 **ChatGPT 账号**登录即可（ChatGPT Plus / Pro / Business / Edu / Enterprise 套餐均包含 Codex），也可以改用 API Key。
 
-```bash
-# macOS / Linux（bash/zsh）
-export OPENAI_API_KEY="sk-..."
-```
-
-```powershell
-# Windows PowerShell —— 仅当前会话
-$env:OPENAI_API_KEY = "sk-..."
-
-# Windows —— 永久写入用户环境变量（新开终端生效）
-setx OPENAI_API_KEY "sk-..."
-```
+> 不想碰命令行？直接用 **Codex 桌面应用**——同样用 ChatGPT 账号登录，全程图形界面。见下一节。
 
 ---
 
-## 🪟 在 Windows 上使用 Codex
+## 🖥️ Codex 桌面应用（App）
 
-Codex CLI 可以在 Windows 上运行，但**沙箱与部分行为和 macOS/Linux 有明显差异**，这也是很多 Windows 用户踩坑的地方。请重点阅读本节。
+除了命令行，Codex 还提供一个**桌面应用**，在 **macOS 与 Windows** 上都能用（Windows 版自 2026 年 3 月起提供）。它把「并行多线程、Git worktree、自动化、内置浏览器、审批权限」全部塞进图形界面——不用记命令，鼠标点点就能跑。这也是 Windows 用户最省心的方式。
 
-### 两条路线：原生 Windows vs. WSL2
+### 安装与登录（三步）
 
-| 路线 | 说明 | 建议场景 |
-|------|------|----------|
-| **原生 Windows（PowerShell）** | 直接在 PowerShell 里 `npm install -g @openai/codex` 后使用。上手最快。 | 快速试用、简单任务 |
-| **WSL2（推荐）** | 在 Windows 里装 Ubuntu 子系统，在 Linux 环境中跑 Codex，可获得**完整的沙箱隔离**与最接近官方测试的体验。 | 日常开发、需要沙箱防护 |
+1. **下载 Codex 应用**并安装（企业可通过 Microsoft Store + MDM 统一分发）。
+2. 打开应用，用 **ChatGPT 账号登录**（Plus / Pro / Business / Edu / Enterprise 均含 Codex），或填入 OpenAI API Key。
+3. 选择要打开的本地仓库文件夹，开始新建一个**线程**（thread）下达任务。
 
-> ⚠️ **关键差异：沙箱**
-> Codex 的操作系统级沙箱（Linux 上的 Landlock/seccomp、macOS 上的 seatbelt）在**原生 Windows 上并不完全等价**。也就是说，在原生 Windows 下 `workspace-write` 的隔离强度不如 Linux/macOS。若你需要真正的沙箱防护，请走 **WSL2**。
+> **Windows 沙箱说明**：应用在 Windows 上原生运行时，使用 **PowerShell + Windows 沙箱**来隔离；如果你需要 Linux 原生环境，也可以在应用里配置成走 **WSL2**。这一切都由应用管理，你不需要手敲 PowerShell 命令。
 
-### 启用 WSL2（一次性）
+### 应用的核心能力
 
-以管理员身份打开 PowerShell：
+| 能力 | 说明 |
+|------|------|
+| **并行线程** | 同时开多个线程，让多个 agent 各干各的，互不打架。 |
+| **Git worktree** | 每个线程在独立 worktree 里改代码，天然隔离，方便分别 review diff。 |
+| **自动化（Automations）** | 把常用任务做成可重复的一键动作；还能**定时**运行，或**唤醒**同一线程做周期性检查。 |
+| **内置浏览器 / Computer Use** | 应用自带浏览器，agent 可以真正打开网页、点击操作——这正是做**市场调研**类任务的基础。 |
+| **产物预览 / 插件 / 技能** | 直接预览生成的图表、文档等产物，并支持 plugins 与 skills（Understand-Anything 就是一个技能）。 |
 
-```powershell
-wsl --install
-```
+### 在应用里设置权限（含"绕过"）
 
-重启后进入 Ubuntu，在 Linux 环境里安装 Node.js 与 Codex，然后**在 WSL 里**打开你的项目目录使用 Codex。注意：把项目放在 WSL 文件系统（如 `~/project`）里，比放在 `/mnt/c/...` 的 Windows 盘上性能更好。
+应用把权限收敛成三个模式，从线程里的权限菜单（等价于 CLI 的 `/permissions`）随时切换：
 
-### Windows 上的路径与命令对照
+| 模式 | 能做什么 | 适用场景 |
+|------|----------|----------|
+| **Read Only（只读）** | 只能读代码、聊天、规划，不改任何文件。 | 方案设计、代码审阅、市场调研收集信息 |
+| **Auto（自动）** | 在工作目录内自动读文件、改代码、跑命令。 | 日常开发（推荐默认） |
+| **Full Access（完全访问）** | 解除沙箱：可访问系统任意文件并联网。**这就是"绕过权限"。** | 仅限隔离环境 |
 
-| 事项 | macOS / Linux | 原生 Windows（PowerShell） |
-|------|---------------|-----------------------------|
-| 配置文件 | `~/.codex/config.toml` | `%USERPROFILE%\.codex\config.toml`（即 `C:\Users\你\.codex\config.toml`） |
-| 设置临时环境变量 | `export KEY=val` | `$env:KEY = "val"` |
-| 设置永久环境变量 | 写入 `~/.zshrc` 等 | `setx KEY "val"` |
-| 当前目录变量 | `$PWD` | `$PWD` 或 `${PWD}`（PowerShell 也支持） |
-| 路径分隔符 | `/` | `\`（但多数工具也接受 `/`） |
-
-### 在 PowerShell 里绕过权限（隔离环境下）
-
-命令本身跨平台一致，只是引号/续行风格按 PowerShell 来：
-
-```powershell
-codex --full-auto "重构该模块并让所有测试通过"
-
-# YOLO 模式——务必在受控环境中使用
-codex --dangerously-bypass-approvals-and-sandbox "升级依赖并修复破坏性变更"
-```
-
-> 由于原生 Windows 沙箱较弱，**在 Windows 上使用 `--dangerously-bypass-approvals-and-sandbox` 风险更高**。强烈建议改在 WSL2、或 Windows 上的 Docker Desktop 容器里运行此类高权限任务。
-
-### 用 install.ps1 安装 Understand-Anything（Windows）
-
-本仓库为 Windows 提供了 PowerShell 安装脚本：
-
-```powershell
-iwr -useb https://raw.githubusercontent.com/Lum1104/Understand-Anything/main/install.ps1 | iex
-```
-
-如果走 WSL2 路线，则在 WSL 的 Ubuntu 里改用 bash 版脚本：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Lum1104/Understand-Anything/main/install.sh | bash -s codex
-```
-
-### Windows 常见坑
-
-- **PowerShell 执行策略**：若脚本被拦，运行 `Set-ExecutionPolicy -Scope Process RemoteSigned` 临时放行当前会话。
-- **换行符**：Windows 的 `CRLF` 可能影响 shell 脚本；仓库里 `.gitattributes` 或 `git config core.autocrlf` 需按需设置。
-- **长路径**：启用 Windows 长路径支持（`git config --system core.longpaths true`）可避免深层 `node_modules` 报错。
-- **找不到 `codex` 命令**：确认 npm 全局 bin 目录（`npm config get prefix`）已加入 `PATH`，然后新开一个终端。
+> ⚠️ **绕过权限 = Full Access，请当作 `sudo` 看待**
+> `Full Access` 完全移除沙箱限制，威力大也危险。**只应**在 Docker 容器、一次性虚拟机或实验性分支里使用。日常请用 `Auto`，它已足够顺手且保留基本隔离。
+>
+> 注：CLI 的 `--full-auto` 旧开关已在 v0.128 起弃用，官方转向**可组合的显式权限**（沙箱 / 审批 / 信任三者独立）——应用里的三个模式正是这一思路的图形化体现。
 
 ---
 
@@ -219,6 +178,8 @@ codex --sandbox workspace-write
   ```bash
   codex --full-auto "重构这个模块并让所有测试通过"
   ```
+
+  > 注：`--full-auto` 开关自 CLI v0.128 起已弃用，官方转向显式、可组合的权限（沙箱 / 审批 / 信任独立设置）。等价写法：`codex --sandbox workspace-write --ask-for-approval on-request "..."`。桌面应用里对应 **Auto** 模式。
 
 ### 4.4 绕过权限（YOLO 模式）⚠️
 
@@ -440,13 +401,79 @@ done
 
 ---
 
-## 9. 常见问题
+## 9. 用例：用提示词把一切自动化
+
+Codex 的真正威力在于——**你几乎只用写"提示词（prompt）"，就能把整条流程自动化**。下面给出几个从"下达指令"到"落地产物"的完整例子。原则是：**说清目标 + 说清产物 + 说清验收标准**，剩下交给 agent。
+
+### 用例 A — 市场调研（Read Only + 内置浏览器）
+
+在应用里新建线程，选 **Read Only** 模式（只读、零风险），下达：
+
+```
+你是一名市场研究员。用内置浏览器调研"面向中小团队的 AI 代码助手"市场：
+1. 列出 6-8 个主要产品，整理定价、目标用户、核心卖点、明显短板；
+2. 汇总成一张 Markdown 对比表，并写一段 200 字的机会点分析；
+3. 每条结论后面附上来源链接。
+把结果保存为 research/ai-coding-assistants.md。
+```
+
+Codex 会用内置浏览器逐个网站取证、整理成表格产物，你可在应用里直接预览。**只读模式**保证它绝不会误改你的文件。
+
+### 用例 B — 搭一个"自动化 agent"（Automations + 定时）
+
+想要一个每天自检的助手？用应用的 **Automations**（自动化）把一段提示词变成定时任务：
+
+```
+每个工作日 09:00：
+1. git pull 拉取最新代码；
+2. 运行 `pnpm test` 与 `pnpm lint`；
+3. 若有失败，用一段中文摘要列出失败项与可能原因；
+4. 把摘要追加到 reports/daily-YYYYMMDD.md。
+只在有失败时提醒我。
+```
+
+保存为自动化后，它会**按时唤醒同一线程**重复执行——这就是一个"值班 agent"。同理可做：每天汇总依赖更新、每周生成变更周报、监控某网页有无更新。
+
+### 用例 C — 从零搭项目骨架（Auto 模式）
+
+```
+帮我初始化一个 TypeScript + Vitest 的库项目：
+- 生成 package.json（含 build/test/lint 脚本）、tsconfig、eslint 配置；
+- 建立 src/ 与 tests/ 目录与示例文件；
+- 写一份 AGENTS.md 说明技术栈、命令与约定；
+- 最后运行一次 test 确认全绿，并 git 初始化提交。
+```
+
+### 用例 D — 批量重构 / 迁移（Auto + worktree）
+
+开多个并行线程，每个线程在独立 worktree 里处理一个子包，互不干扰：
+
+```
+把 packages/ 下所有子包从 CommonJS 迁移到 ESM，逐包修改并保证各自构建通过；
+每完成一个子包就 commit 一次，提交信息说明改了什么。
+```
+
+### 写好提示词的通用配方
+
+> **角色 + 目标 + 步骤 + 产物 + 验收 + 边界**
+> - **角色**：你是一名市场研究员 / 资深后端工程师……
+> - **目标**：要解决的问题，一句话说清。
+> - **步骤**：拆成有序小步，降低跑偏概率。
+> - **产物**：明确落到哪个文件、什么格式（表格 / 报告 / 代码）。
+> - **验收**：可验证的完成标准（"测试全绿""附来源链接"）。
+> - **边界**：不要动什么、失败时怎么办、需不需要先给计划。
+
+把这套配方写进 `AGENTS.md` 或自动化里，就能让 Codex 稳定复现你想要的结果——**一切皆可由提示词驱动**。
+
+---
+
+## 10. 常见问题
 
 **Q：每一步都要我确认，太慢了怎么办？**
-A：改用 `--full-auto`（工作目录内自动干活，只在失败时问你），或在 `config.toml` 里设默认策略。
+A：切到 **Auto** 模式（应用里选，或 CLI 用 `--sandbox workspace-write --ask-for-approval on-request`）——它在工作目录内自动干活，只在必要时才问你。也可在 `config.toml` 里设为默认。
 
 **Q：绕过权限安全吗？**
-A：`--dangerously-bypass-approvals-and-sandbox` 会关闭全部防护，只应在一次性隔离容器 / CI 沙箱中对可信任务使用。日常请用 `--full-auto`。
+A：绕过权限就是 **Full Access**（CLI 的 `--dangerously-bypass-approvals-and-sandbox`），会关闭全部防护，只应在一次性隔离容器 / CI 沙箱中对可信任务使用。日常请用 **Auto**。
 
 **Q：Codex 改错了怎么办？**
 A：养成小步提交的习惯（技巧 5），用 `git diff` / `git restore` / `git reset` 精确回退。
@@ -458,7 +485,7 @@ A：认真写 `AGENTS.md`（第 5 节），把技术栈、目录、命令、禁�
 A：`codex --sandbox read-only`，或使用只读的 `review` profile。
 
 **Q：我在 Windows 上用，需要注意什么？**
-A：见 [Windows 专区](#-在-windows-上使用-codex)。要点：原生 Windows 沙箱较弱，需要真正隔离请走 **WSL2**；环境变量用 `$env:` / `setx`；配置在 `%USERPROFILE%\.codex\config.toml`；高权限任务尽量放进 WSL 或 Docker 容器里跑。
+A：Windows 上最省心的方式是用 [Codex 桌面应用](#-codex-桌面应用app)：ChatGPT 账号登录，权限从三档模式里选（Read Only / Auto / Full Access），沙箱由应用托管；需要 Linux 原生环境时可在应用里切到 WSL2。高权限（Full Access）任务仍建议放进容器或一次性 VM。
 
 ---
 

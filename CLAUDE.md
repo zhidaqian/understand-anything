@@ -53,6 +53,7 @@ An open-source tool combining LLM intelligence + static analysis to produce inte
 
 ## Scripts
 - `scripts/generate-large-graph.mjs` — Generates a fake knowledge graph for performance testing (e.g. large-graph layout). Writes to `.understand-anything/knowledge-graph.json`. Usage: `node scripts/generate-large-graph.mjs [nodeCount]` (default: 3000 nodes). Not part of the production pipeline.
+- `scripts/generate-supply-chain-graph.mjs` — Generates a **real** knowledge graph of the AI supply chain (the same 11-layer logic as `docs/ai-supply-chain/README.md`: components, companies with 1-year stock data, upstream/downstream edges, bottlenecks, frontier R&D, and a guided tour). Structured as a pipeline of builder stages that mirror the agent pipeline (project-scanner → file-analyzer → domain-analyzer → architecture-analyzer → tour-builder → graph-reviewer), and validated against the core `validateGraph` schema. Writes to `docs/ai-supply-chain/knowledge-graph.json` (override with `--out <path>`, e.g. `.understand-anything/knowledge-graph.json` to load it in the dashboard). Exports `buildGraph()` for tests (`tests/supply-chain/graph.test.mjs`). Requires core built first (`pnpm --filter @understand-anything/core build`).
 
 ## Versioning
 When pushing to remote, bump the version in **all five** of these files (keep them in sync):

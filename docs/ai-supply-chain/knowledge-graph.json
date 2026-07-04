@@ -1,0 +1,2156 @@
+{
+  "version": "1.0",
+  "kind": "knowledge",
+  "project": {
+    "name": "AI 人工智能供应链",
+    "languages": [],
+    "frameworks": [],
+    "description": "AI 算力基础设施产业链的 11 层知识图谱：组件、企业、上下游关系、瓶颈、前沿在研项目与近 1 年股价（作者：钱志达；数据约 2026-07-04，仅供参考）。",
+    "analyzedAt": "2026-07-04T00:00:00.000Z",
+    "gitCommitHash": "0000000000000000000000000000000000000000"
+  },
+  "nodes": [
+    {
+      "id": "t.materials",
+      "type": "topic",
+      "name": "① 底层工具 / 材料",
+      "summary": "EDA、半导体设备、电子材料、IP —— 垄断最强、毛利最高",
+      "tags": [
+        "layer",
+        "materials"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.fab",
+      "type": "topic",
+      "name": "② 芯片制造",
+      "summary": "晶圆代工、CoWoS 先进封装、载板、封测 —— 当前最硬的瓶颈",
+      "tags": [
+        "layer",
+        "fab"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.compute",
+      "type": "topic",
+      "name": "③ 计算芯片",
+      "summary": "GPU / ASIC / CPU / DPU —— 算力大脑",
+      "tags": [
+        "layer",
+        "compute"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.memory",
+      "type": "topic",
+      "name": "④ 存储",
+      "summary": "HBM / DRAM / NAND —— 算力的记忆，周期+成长共振最强",
+      "tags": [
+        "layer",
+        "memory"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.network",
+      "type": "topic",
+      "name": "⑤ 网络互联",
+      "summary": "交换芯片 / 光模块 / CPO / 铜连接 —— 把几万张卡连起来",
+      "tags": [
+        "layer",
+        "network"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.hardware",
+      "type": "topic",
+      "name": "⑥ 硬件系统",
+      "summary": "PCB / 被动件(MLCC) / 服务器机柜 —— 组装成系统",
+      "tags": [
+        "layer",
+        "hardware"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.power",
+      "type": "topic",
+      "name": "⑦ 电力全链",
+      "summary": "发电→输配→变压器→机房供电→储能 —— AI 扩张的物理天花板",
+      "tags": [
+        "layer",
+        "power"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.cooling",
+      "type": "topic",
+      "name": "⑧ 散热全链",
+      "summary": "液冷 / 风冷 / 暖通 / 导热材料 —— 功耗暴增后的刚需",
+      "tags": [
+        "layer",
+        "cooling"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.datacenter",
+      "type": "topic",
+      "name": "⑨ 数据中心基建",
+      "summary": "IDC / 机电工程 —— 有电有地即壁垒",
+      "tags": [
+        "layer",
+        "datacenter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.cloud",
+      "type": "topic",
+      "name": "⑩ 云 & 模型",
+      "summary": "超大规模云 + 大模型 —— 需求发动机、Capex 总开关",
+      "tags": [
+        "layer",
+        "cloud"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "t.app",
+      "type": "topic",
+      "name": "⑪ 应用 & 端侧",
+      "summary": "AI 应用 / Agent / 机器人 —— 最长的雪坡",
+      "tags": [
+        "layer",
+        "app"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.eda",
+      "type": "concept",
+      "name": "EDA 工具",
+      "summary": "① 底层工具 / 材料 · EDA 工具",
+      "tags": [
+        "materials",
+        "垄断"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.equipment",
+      "type": "concept",
+      "name": "半导体设备",
+      "summary": "① 底层工具 / 材料 · 半导体设备",
+      "tags": [
+        "materials",
+        "垄断",
+        "EUV"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.materials",
+      "type": "concept",
+      "name": "电子材料",
+      "summary": "① 底层工具 / 材料 · 电子材料",
+      "tags": [
+        "materials",
+        "硅片",
+        "光刻胶",
+        "陶瓷粉"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.foundry",
+      "type": "concept",
+      "name": "晶圆代工",
+      "summary": "② 芯片制造 · 晶圆代工",
+      "tags": [
+        "fab",
+        "台积电"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.cowos",
+      "type": "concept",
+      "name": "CoWoS 先进封装",
+      "summary": "② 芯片制造 · CoWoS 先进封装",
+      "tags": [
+        "fab",
+        "瓶颈",
+        "台积电独家"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.glass-sub",
+      "type": "concept",
+      "name": "玻璃基板",
+      "summary": "② 芯片制造 · 【前沿在研】玻璃基板",
+      "tags": [
+        "fab",
+        "前沿",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.bridge-pkg",
+      "type": "concept",
+      "name": "桥接封装 / 硅桥",
+      "summary": "② 芯片制造 · 【前沿在研】桥接封装 / 硅桥",
+      "tags": [
+        "fab",
+        "前沿",
+        "EMIB",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.substrate",
+      "type": "concept",
+      "name": "ABF 载板",
+      "summary": "② 芯片制造 · ABF 载板",
+      "tags": [
+        "fab"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.gpu",
+      "type": "concept",
+      "name": "GPU",
+      "summary": "③ 计算芯片 · GPU",
+      "tags": [
+        "compute",
+        "NVIDIA",
+        "CUDA"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.asic",
+      "type": "concept",
+      "name": "ASIC / 自研芯片",
+      "summary": "③ 计算芯片 · ASIC / 自研芯片",
+      "tags": [
+        "compute",
+        "去NVIDIA化"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.cpu",
+      "type": "concept",
+      "name": "服务器 CPU",
+      "summary": "③ 计算芯片 · 服务器 CPU",
+      "tags": [
+        "compute"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.hbm",
+      "type": "concept",
+      "name": "HBM 高带宽内存",
+      "summary": "④ 存储 · HBM 高带宽内存",
+      "tags": [
+        "memory",
+        "瓶颈",
+        "sold-out"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.dram",
+      "type": "concept",
+      "name": "服务器 DRAM",
+      "summary": "④ 存储 · 服务器 DRAM",
+      "tags": [
+        "memory",
+        "周期"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.nand",
+      "type": "concept",
+      "name": "企业级 NAND/SSD",
+      "summary": "④ 存储 · 企业级 NAND/SSD",
+      "tags": [
+        "memory",
+        "推理增量"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.switch",
+      "type": "concept",
+      "name": "交换芯片",
+      "summary": "⑤ 网络互联 · 交换芯片",
+      "tags": [
+        "network",
+        "博通"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.optical",
+      "type": "concept",
+      "name": "光模块 800G/1.6T",
+      "summary": "⑤ 网络互联 · 光模块 800G/1.6T",
+      "tags": [
+        "network",
+        "主升浪"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.cpo",
+      "type": "concept",
+      "name": "CPO / 硅光",
+      "summary": "⑤ 网络互联 · 【前沿在研】CPO / 硅光",
+      "tags": [
+        "network",
+        "前沿",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.copper",
+      "type": "concept",
+      "name": "铜连接 / NVLink",
+      "summary": "⑤ 网络互联 · 铜连接 / NVLink",
+      "tags": [
+        "network"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.pcb",
+      "type": "concept",
+      "name": "高多层 PCB / CCL",
+      "summary": "⑥ 硬件系统 · 高多层 PCB / CCL",
+      "tags": [
+        "hardware"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.mlcc",
+      "type": "concept",
+      "name": "MLCC 多层陶瓷电容",
+      "summary": "⑥ 硬件系统 · MLCC 多层陶瓷电容",
+      "tags": [
+        "hardware",
+        "瓶颈",
+        "被动件"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.server",
+      "type": "concept",
+      "name": "服务器 / 机柜",
+      "summary": "⑥ 硬件系统 · 服务器 / 机柜",
+      "tags": [
+        "hardware",
+        "ODM"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.transformer",
+      "type": "concept",
+      "name": "电力变压器",
+      "summary": "⑦ 电力全链 · 电力变压器",
+      "tags": [
+        "power",
+        "瓶颈",
+        "交付1-2年"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.gas-turbine",
+      "type": "concept",
+      "name": "燃气轮机",
+      "summary": "⑦ 电力全链 · 燃气轮机",
+      "tags": [
+        "power",
+        "发电"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.psu",
+      "type": "concept",
+      "name": "数据中心电源",
+      "summary": "⑦ 电力全链 · 数据中心电源",
+      "tags": [
+        "power",
+        "±400V",
+        "母线"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.smr",
+      "type": "concept",
+      "name": "SMR 小型核电",
+      "summary": "⑦ 电力全链 · 【前沿在研】SMR 小型核电",
+      "tags": [
+        "power",
+        "前沿",
+        "远水",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.storage",
+      "type": "concept",
+      "name": "储能 BESS",
+      "summary": "⑦ 电力全链 · 储能 BESS",
+      "tags": [
+        "power",
+        "备电"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.coldplate",
+      "type": "concept",
+      "name": "冷板液冷",
+      "summary": "⑧ 散热全链 · 冷板液冷",
+      "tags": [
+        "cooling",
+        "主流",
+        "必选"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.immersion",
+      "type": "concept",
+      "name": "浸没 / 两相液冷",
+      "summary": "⑧ 散热全链 · 【前沿在研】浸没 / 两相液冷",
+      "tags": [
+        "cooling",
+        "前沿",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.tim",
+      "type": "concept",
+      "name": "导热材料 TIM",
+      "summary": "⑧ 散热全链 · 导热材料 TIM",
+      "tags": [
+        "cooling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "c.idc",
+      "type": "concept",
+      "name": "IDC / 机电工程",
+      "summary": "⑨ 数据中心基建 · IDC / 机电工程",
+      "tags": [
+        "datacenter",
+        "有电有地"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.hyperscaler",
+      "type": "concept",
+      "name": "超大规模云",
+      "summary": "⑩ 云 & 模型 · 超大规模云",
+      "tags": [
+        "cloud",
+        "Capex总开关"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.model",
+      "type": "concept",
+      "name": "大模型",
+      "summary": "⑩ 云 & 模型 · 大模型",
+      "tags": [
+        "cloud",
+        "ROI分歧"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "c.agent",
+      "type": "concept",
+      "name": "AI 应用 / Agent",
+      "summary": "⑪ 应用 & 端侧 · AI 应用 / Agent",
+      "tags": [
+        "app",
+        "推理来源"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "c.edge",
+      "type": "concept",
+      "name": "端侧 / 机器人",
+      "summary": "⑪ 应用 & 端侧 · 【前沿在研】端侧 / 机器人",
+      "tags": [
+        "app",
+        "最长雪坡",
+        "frontier"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "co.NVDA",
+      "type": "entity",
+      "name": "英伟达 NVIDIA (NVDA)",
+      "summary": "GPU环节。 现价~$194，近1年 +22%，分析师目标 $210-$500（均~$300，隐含 +55%）。",
+      "tags": [
+        "compute",
+        "NVDA",
+        "1yr:+22%",
+        "目标:+55%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "NVDA",
+        "price": 194,
+        "ret1y": "+22%",
+        "low": 210,
+        "high": 500,
+        "avg": 300,
+        "upside": "+55%"
+      }
+    },
+    {
+      "id": "co.AVGO",
+      "type": "entity",
+      "name": "博通 Broadcom (AVGO)",
+      "summary": "ASIC / 自研芯片环节。 现价~$361，近1年 +80%，分析师目标 $375-$630（均~$517，隐含 +43%）。",
+      "tags": [
+        "compute",
+        "AVGO",
+        "1yr:+80%",
+        "目标:+43%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "AVGO",
+        "price": 361,
+        "ret1y": "+80%",
+        "low": 375,
+        "high": 630,
+        "avg": 517,
+        "upside": "+43%"
+      }
+    },
+    {
+      "id": "co.MRVL",
+      "type": "entity",
+      "name": "迈威尔 Marvell (MRVL)",
+      "summary": "ASIC / 自研芯片环节。 现价~$270，近1年 +214%，分析师目标 $110-$385（均~$249，隐含 -8%）。",
+      "tags": [
+        "compute",
+        "MRVL",
+        "1yr:+214%",
+        "目标:-8%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "MRVL",
+        "price": 270,
+        "ret1y": "+214%",
+        "low": 110,
+        "high": 385,
+        "avg": 249,
+        "upside": "-8%"
+      }
+    },
+    {
+      "id": "co.TSM",
+      "type": "entity",
+      "name": "台积电 (TSM)",
+      "summary": "晶圆代工环节。 现价~$434，近1年 +45%*，分析师目标 $400-$625（均~$490，隐含 +13%）。",
+      "tags": [
+        "fab",
+        "TSM",
+        "1yr:+45%*",
+        "目标:+13%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "TSM",
+        "price": 434,
+        "ret1y": "+45%*",
+        "low": 400,
+        "high": 625,
+        "avg": 490,
+        "upside": "+13%"
+      }
+    },
+    {
+      "id": "co.ASML",
+      "type": "entity",
+      "name": "ASML (ASML)",
+      "summary": "半导体设备环节。 现价~$1769，近1年 +131%，分析师目标 $1415-$2345（均~$1900，隐含 +7%）。",
+      "tags": [
+        "materials",
+        "ASML",
+        "1yr:+131%",
+        "目标:+7%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "ASML",
+        "price": 1769,
+        "ret1y": "+131%",
+        "low": 1415,
+        "high": 2345,
+        "avg": 1900,
+        "upside": "+7%"
+      }
+    },
+    {
+      "id": "co.AMAT",
+      "type": "entity",
+      "name": "应用材料 (AMAT)",
+      "summary": "半导体设备环节。 现价~$608，近1年 +135%，分析师目标 $500-$900（均~$579，隐含 -5%）。",
+      "tags": [
+        "materials",
+        "AMAT",
+        "1yr:+135%",
+        "目标:-5%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "AMAT",
+        "price": 608,
+        "ret1y": "+135%",
+        "low": 500,
+        "high": 900,
+        "avg": 579,
+        "upside": "-5%"
+      }
+    },
+    {
+      "id": "co.MU",
+      "type": "entity",
+      "name": "美光 Micron (MU)",
+      "summary": "HBM 高带宽内存环节。 现价~$976，近1年 +698%，分析师目标 $1100-$2200（均~$1500，隐含 +54%）。",
+      "tags": [
+        "memory",
+        "MU",
+        "1yr:+698%",
+        "目标:+54%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "MU",
+        "price": 976,
+        "ret1y": "+698%",
+        "low": 1100,
+        "high": 2200,
+        "avg": 1500,
+        "upside": "+54%"
+      }
+    },
+    {
+      "id": "co.000660.KS",
+      "type": "entity",
+      "name": "SK 海力士 (000660.KS)",
+      "summary": "HBM 高带宽内存环节。 现价~$—，近1年 +818%，分析师目标 —。",
+      "tags": [
+        "memory",
+        "000660.KS",
+        "1yr:+818%",
+        "目标:—"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "000660.KS",
+        "price": null,
+        "ret1y": "+818%",
+        "low": null,
+        "high": null,
+        "avg": null,
+        "upside": "—"
+      }
+    },
+    {
+      "id": "co.GLW",
+      "type": "entity",
+      "name": "康宁 Corning (GLW)",
+      "summary": "玻璃基板环节。 现价~$221，近1年 +391%，分析师目标 $180-$270（均~$204，隐含 -8%）。",
+      "tags": [
+        "fab",
+        "GLW",
+        "1yr:+391%",
+        "目标:-8%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "GLW",
+        "price": 221,
+        "ret1y": "+391%",
+        "low": 180,
+        "high": 270,
+        "avg": 204,
+        "upside": "-8%"
+      }
+    },
+    {
+      "id": "co.COHR",
+      "type": "entity",
+      "name": "Coherent (COHR)",
+      "summary": "光模块 800G/1.6T环节。 现价~$369，近1年 +373%，分析师目标 $230-$465（均~$388，隐含 +5%）。",
+      "tags": [
+        "network",
+        "COHR",
+        "1yr:+373%",
+        "目标:+5%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "COHR",
+        "price": 369,
+        "ret1y": "+373%",
+        "low": 230,
+        "high": 465,
+        "avg": 388,
+        "upside": "+5%"
+      }
+    },
+    {
+      "id": "co.VRT",
+      "type": "entity",
+      "name": "Vertiv 维谛 (VRT)",
+      "summary": "冷板液冷环节。 现价~$305，近1年 +177%，分析师目标 $260-$500（均~$381，隐含 +25%）。",
+      "tags": [
+        "cooling",
+        "VRT",
+        "1yr:+177%",
+        "目标:+25%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "VRT",
+        "price": 305,
+        "ret1y": "+177%",
+        "low": 260,
+        "high": 500,
+        "avg": 381,
+        "upside": "+25%"
+      }
+    },
+    {
+      "id": "co.GEV",
+      "type": "entity",
+      "name": "GE Vernova (GEV)",
+      "summary": "燃气轮机环节。 现价~$1119，近1年 +146%，分析师目标 $913-$1467（均~$1212，隐含 +8%）。",
+      "tags": [
+        "power",
+        "GEV",
+        "1yr:+146%",
+        "目标:+8%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "GEV",
+        "price": 1119,
+        "ret1y": "+146%",
+        "low": 913,
+        "high": 1467,
+        "avg": 1212,
+        "upside": "+8%"
+      }
+    },
+    {
+      "id": "co.ETN",
+      "type": "entity",
+      "name": "伊顿 Eaton (ETN)",
+      "summary": "数据中心电源环节。 现价~$396，近1年 +19%，分析师目标 $360-$534（均~$452，隐含 +14%）。",
+      "tags": [
+        "power",
+        "ETN",
+        "1yr:+19%",
+        "目标:+14%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "ETN",
+        "price": 396,
+        "ret1y": "+19%",
+        "low": 360,
+        "high": 534,
+        "avg": 452,
+        "upside": "+14%"
+      }
+    },
+    {
+      "id": "co.CEG",
+      "type": "entity",
+      "name": "Constellation (CEG)",
+      "summary": "SMR 小型核电环节。 现价~$237，近1年 -22%，分析师目标 $272-$441（均~$372，隐含 +57%）。",
+      "tags": [
+        "power",
+        "CEG",
+        "1yr:-22%",
+        "目标:+57%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "CEG",
+        "price": 237,
+        "ret1y": "-22%",
+        "low": 272,
+        "high": 441,
+        "avg": 372,
+        "upside": "+57%"
+      }
+    },
+    {
+      "id": "co.OKLO",
+      "type": "entity",
+      "name": "Oklo (OKLO)",
+      "summary": "SMR 小型核电环节。 现价~$52，近1年 +9%，分析师目标 $44-$150（均~$95，隐含 +83%）。",
+      "tags": [
+        "power",
+        "OKLO",
+        "1yr:+9%",
+        "目标:+83%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "OKLO",
+        "price": 52,
+        "ret1y": "+9%",
+        "low": 44,
+        "high": 150,
+        "avg": 95,
+        "upside": "+83%"
+      }
+    },
+    {
+      "id": "co.SMR",
+      "type": "entity",
+      "name": "NuScale (SMR)",
+      "summary": "SMR 小型核电环节。 现价~$10，近1年 回落，分析师目标 $7-$25（均~$15，隐含 +50%）。",
+      "tags": [
+        "power",
+        "SMR",
+        "1yr:回落",
+        "目标:+50%"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "SMR",
+        "price": 10,
+        "ret1y": "回落",
+        "low": 7,
+        "high": 25,
+        "avg": 15,
+        "upside": "+50%"
+      }
+    },
+    {
+      "id": "co.300308.SZ",
+      "type": "entity",
+      "name": "中际旭创 (300308.SZ)",
+      "summary": "光模块 800G/1.6T环节。",
+      "tags": [
+        "network",
+        "300308.SZ",
+        "A股"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "300308.SZ"
+      }
+    },
+    {
+      "id": "co.002837.SZ",
+      "type": "entity",
+      "name": "英维克 (002837.SZ)",
+      "summary": "冷板液冷环节。",
+      "tags": [
+        "cooling",
+        "002837.SZ",
+        "A股"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "002837.SZ"
+      }
+    },
+    {
+      "id": "co.688676.SH",
+      "type": "entity",
+      "name": "金盘科技 (688676.SH)",
+      "summary": "电力变压器环节。",
+      "tags": [
+        "power",
+        "688676.SH",
+        "A股"
+      ],
+      "complexity": "moderate",
+      "market": {
+        "ticker": "688676.SH"
+      }
+    },
+    {
+      "id": "cl.b-cowos",
+      "type": "claim",
+      "name": "瓶颈：CoWoS 封装",
+      "summary": "台积电独家、扩产周期长，是全链稀缺性最高的环节之一——真正卡 GPU 出货的不是晶圆而是 CoWoS。",
+      "tags": [
+        "claim",
+        "bottleneck"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "cl.b-hbm",
+      "type": "claim",
+      "name": "瓶颈：HBM",
+      "summary": "良率低、挤占普通 DRAM 晶圆产能、长约锁定到一年以上；HBM4 起 base die 上逻辑制程，与代工进一步绑定。",
+      "tags": [
+        "claim",
+        "bottleneck"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "cl.b-power",
+      "type": "claim",
+      "name": "瓶颈：电力",
+      "summary": "变压器交付拉长到 1-2 年，燃气轮机排产到 2028+；电力正成为 AI 扩张的物理天花板。",
+      "tags": [
+        "claim",
+        "bottleneck"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "cl.b-mlcc",
+      "type": "claim",
+      "name": "瓶颈：高端 MLCC",
+      "summary": "AI 服务器单板用量数倍于普通服务器，高容产能集中日厂；普通 MLCC 是周期红海。",
+      "tags": [
+        "claim",
+        "bottleneck"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "cl.rotation",
+      "type": "claim",
+      "name": "洞察：瓶颈轮动",
+      "summary": "瓶颈是移动的：GPU→CoWoS→HBM→电力→发电量/HBM4 base die/下一代封装。在轮动到来前埋伏下一环。",
+      "tags": [
+        "claim",
+        "thesis"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "cl.capex",
+      "type": "claim",
+      "name": "总开关：大厂 Capex",
+      "summary": "四大云厂 + 主权 AI 的资本开支是全链最高频领先指标；上调就拿住、下修就减仓。",
+      "tags": [
+        "claim",
+        "thesis"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "cl.shovels",
+      "type": "claim",
+      "name": "策略：优先卖铲人",
+      "summary": "应用层胜负未定，但卖算力、卖电、卖散热的确定性更高。最深护城河在芯，最稳的钱在电，最快成长在冷与联。",
+      "tags": [
+        "claim",
+        "thesis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "cl.frontier-risk",
+      "type": "claim",
+      "name": "风险：在研主题高波动",
+      "summary": "玻璃基板、CPO 有明确导入表；SMR 核电是远水，估值易透支——核电小票已从高点回撤 70-80%。买在研主题须区分‘已下订单’与‘仅有 PPT’。",
+      "tags": [
+        "claim",
+        "thesis"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "c.eda",
+      "target": "t.materials",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.equipment",
+      "target": "t.materials",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.materials",
+      "target": "t.materials",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.foundry",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.cowos",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.glass-sub",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.bridge-pkg",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.substrate",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.gpu",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.asic",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.cpu",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.hbm",
+      "target": "t.memory",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.dram",
+      "target": "t.memory",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.nand",
+      "target": "t.memory",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.switch",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.optical",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.cpo",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.copper",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.pcb",
+      "target": "t.hardware",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.mlcc",
+      "target": "t.hardware",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.server",
+      "target": "t.hardware",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.transformer",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.gas-turbine",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.psu",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.smr",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.storage",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.coldplate",
+      "target": "t.cooling",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.immersion",
+      "target": "t.cooling",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.tim",
+      "target": "t.cooling",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.idc",
+      "target": "t.datacenter",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.hyperscaler",
+      "target": "t.cloud",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.model",
+      "target": "t.cloud",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.agent",
+      "target": "t.app",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.edge",
+      "target": "t.app",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "co.NVDA",
+      "target": "c.gpu",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.NVDA",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.AVGO",
+      "target": "c.asic",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.AVGO",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.MRVL",
+      "target": "c.asic",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.MRVL",
+      "target": "t.compute",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.TSM",
+      "target": "c.foundry",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.TSM",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.ASML",
+      "target": "c.equipment",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.ASML",
+      "target": "t.materials",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.AMAT",
+      "target": "c.equipment",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.AMAT",
+      "target": "t.materials",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.MU",
+      "target": "c.hbm",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.MU",
+      "target": "t.memory",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.000660.KS",
+      "target": "c.hbm",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.000660.KS",
+      "target": "t.memory",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.GLW",
+      "target": "c.glass-sub",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.GLW",
+      "target": "t.fab",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.COHR",
+      "target": "c.optical",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.COHR",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.VRT",
+      "target": "c.coldplate",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.VRT",
+      "target": "t.cooling",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.GEV",
+      "target": "c.gas-turbine",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.GEV",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.ETN",
+      "target": "c.psu",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.ETN",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.CEG",
+      "target": "c.smr",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.CEG",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.OKLO",
+      "target": "c.smr",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.OKLO",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.SMR",
+      "target": "c.smr",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.SMR",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.300308.SZ",
+      "target": "c.optical",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.300308.SZ",
+      "target": "t.network",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.002837.SZ",
+      "target": "c.coldplate",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.002837.SZ",
+      "target": "t.cooling",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "co.688676.SH",
+      "target": "c.transformer",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "co.688676.SH",
+      "target": "t.power",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "c.foundry",
+      "target": "c.equipment",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.foundry",
+      "target": "c.eda",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.foundry",
+      "target": "c.materials",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.cowos",
+      "target": "c.foundry",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.glass-sub",
+      "target": "c.materials",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.gpu",
+      "target": "c.cowos",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.95
+    },
+    {
+      "source": "c.gpu",
+      "target": "c.hbm",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.95
+    },
+    {
+      "source": "c.gpu",
+      "target": "c.foundry",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.gpu",
+      "target": "c.substrate",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.asic",
+      "target": "c.cowos",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "c.asic",
+      "target": "c.hbm",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "c.asic",
+      "target": "c.foundry",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.85
+    },
+    {
+      "source": "c.hbm",
+      "target": "c.foundry",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "c.hbm",
+      "target": "c.cowos",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.server",
+      "target": "c.gpu",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.server",
+      "target": "c.cpu",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.server",
+      "target": "c.hbm",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.server",
+      "target": "c.optical",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.server",
+      "target": "c.mlcc",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.server",
+      "target": "c.pcb",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.server",
+      "target": "c.copper",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.optical",
+      "target": "c.cpo",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "c.switch",
+      "target": "c.foundry",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.idc",
+      "target": "c.server",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.idc",
+      "target": "c.transformer",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.85
+    },
+    {
+      "source": "c.idc",
+      "target": "c.coldplate",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "c.idc",
+      "target": "c.psu",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "c.transformer",
+      "target": "c.materials",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.psu",
+      "target": "c.mlcc",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "c.idc",
+      "target": "c.gas-turbine",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "c.idc",
+      "target": "c.smr",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "c.idc",
+      "target": "c.storage",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "c.idc",
+      "target": "c.immersion",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "c.coldplate",
+      "target": "c.tim",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "c.hyperscaler",
+      "target": "c.idc",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.95
+    },
+    {
+      "source": "c.model",
+      "target": "c.hyperscaler",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "c.agent",
+      "target": "c.model",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.85
+    },
+    {
+      "source": "c.edge",
+      "target": "c.model",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.b-cowos",
+      "target": "c.cowos",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.b-hbm",
+      "target": "c.hbm",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.b-power",
+      "target": "c.transformer",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.b-power",
+      "target": "c.gas-turbine",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.b-mlcc",
+      "target": "c.mlcc",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.rotation",
+      "target": "c.cowos",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.rotation",
+      "target": "c.hbm",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.rotation",
+      "target": "c.transformer",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.rotation",
+      "target": "c.smr",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.capex",
+      "target": "c.hyperscaler",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.shovels",
+      "target": "c.gpu",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.shovels",
+      "target": "c.transformer",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.shovels",
+      "target": "c.coldplate",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.frontier-risk",
+      "target": "c.glass-sub",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.frontier-risk",
+      "target": "c.cpo",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.frontier-risk",
+      "target": "c.smr",
+      "type": "cites",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "cl.rotation",
+      "target": "cl.b-cowos",
+      "type": "builds_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "cl.rotation",
+      "target": "cl.b-hbm",
+      "type": "builds_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "cl.rotation",
+      "target": "cl.b-power",
+      "type": "builds_on",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "cl.shovels",
+      "target": "cl.capex",
+      "type": "builds_on",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer-0",
+      "name": "① 底层工具 / 材料",
+      "description": "EDA、半导体设备、电子材料、IP —— 垄断最强、毛利最高",
+      "nodeIds": [
+        "c.eda",
+        "c.equipment",
+        "c.materials",
+        "t.materials",
+        "co.ASML",
+        "co.AMAT"
+      ]
+    },
+    {
+      "id": "layer-1",
+      "name": "② 芯片制造",
+      "description": "晶圆代工、CoWoS 先进封装、载板、封测 —— 当前最硬的瓶颈",
+      "nodeIds": [
+        "c.foundry",
+        "c.cowos",
+        "c.glass-sub",
+        "c.bridge-pkg",
+        "c.substrate",
+        "t.fab",
+        "co.TSM",
+        "co.GLW"
+      ]
+    },
+    {
+      "id": "layer-2",
+      "name": "③ 计算芯片",
+      "description": "GPU / ASIC / CPU / DPU —— 算力大脑",
+      "nodeIds": [
+        "c.gpu",
+        "c.asic",
+        "c.cpu",
+        "t.compute",
+        "co.NVDA",
+        "co.AVGO",
+        "co.MRVL"
+      ]
+    },
+    {
+      "id": "layer-3",
+      "name": "④ 存储",
+      "description": "HBM / DRAM / NAND —— 算力的记忆，周期+成长共振最强",
+      "nodeIds": [
+        "c.hbm",
+        "c.dram",
+        "c.nand",
+        "t.memory",
+        "co.MU",
+        "co.000660.KS"
+      ]
+    },
+    {
+      "id": "layer-4",
+      "name": "⑤ 网络互联",
+      "description": "交换芯片 / 光模块 / CPO / 铜连接 —— 把几万张卡连起来",
+      "nodeIds": [
+        "c.switch",
+        "c.optical",
+        "c.cpo",
+        "c.copper",
+        "t.network",
+        "co.COHR",
+        "co.300308.SZ"
+      ]
+    },
+    {
+      "id": "layer-5",
+      "name": "⑥ 硬件系统",
+      "description": "PCB / 被动件(MLCC) / 服务器机柜 —— 组装成系统",
+      "nodeIds": [
+        "c.pcb",
+        "c.mlcc",
+        "c.server",
+        "t.hardware"
+      ]
+    },
+    {
+      "id": "layer-6",
+      "name": "⑦ 电力全链",
+      "description": "发电→输配→变压器→机房供电→储能 —— AI 扩张的物理天花板",
+      "nodeIds": [
+        "c.transformer",
+        "c.gas-turbine",
+        "c.psu",
+        "c.smr",
+        "c.storage",
+        "t.power",
+        "co.GEV",
+        "co.ETN",
+        "co.CEG",
+        "co.OKLO",
+        "co.SMR",
+        "co.688676.SH"
+      ]
+    },
+    {
+      "id": "layer-7",
+      "name": "⑧ 散热全链",
+      "description": "液冷 / 风冷 / 暖通 / 导热材料 —— 功耗暴增后的刚需",
+      "nodeIds": [
+        "c.coldplate",
+        "c.immersion",
+        "c.tim",
+        "t.cooling",
+        "co.VRT",
+        "co.002837.SZ"
+      ]
+    },
+    {
+      "id": "layer-8",
+      "name": "⑨ 数据中心基建",
+      "description": "IDC / 机电工程 —— 有电有地即壁垒",
+      "nodeIds": [
+        "c.idc",
+        "t.datacenter"
+      ]
+    },
+    {
+      "id": "layer-9",
+      "name": "⑩ 云 & 模型",
+      "description": "超大规模云 + 大模型 —— 需求发动机、Capex 总开关",
+      "nodeIds": [
+        "c.hyperscaler",
+        "c.model",
+        "t.cloud"
+      ]
+    },
+    {
+      "id": "layer-10",
+      "name": "⑪ 应用 & 端侧",
+      "description": "AI 应用 / Agent / 机器人 —— 最长的雪坡",
+      "nodeIds": [
+        "c.agent",
+        "c.edge",
+        "t.app"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "主线：用电力换智能",
+      "description": "从硅到智能的一条长链——算力、电力、散热三处卡脖子。",
+      "nodeIds": [
+        "t.compute",
+        "t.power",
+        "t.cooling"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "三大瓶颈：利润高地",
+      "description": "CoWoS、HBM、电力变压器是当前最紧的堰塞湖。",
+      "nodeIds": [
+        "c.cowos",
+        "c.hbm",
+        "c.transformer",
+        "cl.b-cowos",
+        "cl.b-hbm"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "算力 → 存储 → 网络",
+      "description": "GPU 靠 HBM 喂数据，靠光/铜互联组成集群。",
+      "nodeIds": [
+        "c.gpu",
+        "c.hbm",
+        "c.optical",
+        "c.copper"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "电力全链",
+      "description": "发电(燃气轮机/SMR)→变压器→机房电源→储能。",
+      "nodeIds": [
+        "c.gas-turbine",
+        "c.transformer",
+        "c.psu",
+        "c.smr",
+        "c.storage"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "下一个瓶颈：瓶颈轮动",
+      "description": "瓶颈是移动的——从 HBM 流向电力，再流向发电与下一代封装。",
+      "nodeIds": [
+        "cl.rotation",
+        "c.smr",
+        "c.glass-sub"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "前沿在研项目",
+      "description": "玻璃基板、桥接封装、CPO/硅光、浸没液冷、SMR 核电。",
+      "nodeIds": [
+        "c.glass-sub",
+        "c.bridge-pkg",
+        "c.cpo",
+        "c.immersion",
+        "c.smr"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "相关企业与股价",
+      "description": "存储/设备领涨(SK海力士/美光/ASML)，电力/液冷兑现(GEV/VRT)，核电高波动(OKLO/NuScale)。",
+      "nodeIds": [
+        "co.MU",
+        "co.000660.KS",
+        "co.GEV",
+        "co.VRT",
+        "co.OKLO",
+        "co.NVDA"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "投资逻辑：优先卖铲人",
+      "description": "护城河在芯、最稳在电、最快成长在冷与联；核心风险是大厂 Capex 何时降速。",
+      "nodeIds": [
+        "cl.shovels",
+        "cl.capex",
+        "c.gpu",
+        "c.transformer",
+        "c.coldplate"
+      ]
+    }
+  ]
+}

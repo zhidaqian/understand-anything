@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.git
+.github
+.understand-anything
+.worktrees
+.private
+coverage
+node-compile-cache
+homepage
+**/*.pdf
+docs/**/*.png
+*.log
+.DS_Store

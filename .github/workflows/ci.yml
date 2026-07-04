@@ -34,3 +34,6 @@ jobs:
 
       - name: Test skill
         run: pnpm test
+
+      - name: Check AI supply-chain graph (schema valid + no drift)
+        run: pnpm graph:supply-chain:check

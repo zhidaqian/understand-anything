@@ -9,7 +9,9 @@
     "build": "pnpm -r build",
     "test": "vitest run",
     "dev:dashboard": "pnpm --filter @understand-anything/dashboard dev",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "graph:supply-chain": "node scripts/generate-supply-chain-graph.mjs",
+    "graph:supply-chain:check": "node scripts/check-supply-chain-graph.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

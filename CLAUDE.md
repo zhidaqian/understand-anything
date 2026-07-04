@@ -53,6 +53,18 @@ An open-source tool combining LLM intelligence + static analysis to produce inte
 
 ## Scripts
 - `scripts/generate-large-graph.mjs` — Generates a fake knowledge graph for performance testing (e.g. large-graph layout). Writes to `.understand-anything/knowledge-graph.json`. Usage: `node scripts/generate-large-graph.mjs [nodeCount]` (default: 3000 nodes). Not part of the production pipeline.
+- `scripts/generate-supply-chain-graph.mjs` — Generates a **real** knowledge graph of the AI supply chain (the same 11-layer logic as `docs/ai-supply-chain/README.md`: components, companies with 1-year stock data, upstream/downstream edges, bottlenecks, frontier R&D, and a guided tour). Structured as a pipeline of builder stages that mirror the agent pipeline (project-scanner → file-analyzer → domain-analyzer → architecture-analyzer → tour-builder → graph-reviewer), and validated against the core `validateGraph` schema. Writes to `docs/ai-supply-chain/knowledge-graph.json` (override with `--out <path>`, e.g. `.understand-anything/knowledge-graph.json` to load it in the dashboard). Exports `buildGraph()` for tests (`tests/supply-chain/graph.test.mjs`). Requires core built first (`pnpm --filter @understand-anything/core build`).
+- `scripts/check-supply-chain-graph.mjs` — Production/CI guard: regenerates the graph in-memory and fails if it no longer passes `validateGraph` (anything dropped) **or** if the committed `docs/ai-supply-chain/knowledge-graph.json` differs from a fresh deterministic generation (stale/hand-edited). Wired into CI (`.github/workflows/ci.yml`).
+
+### Graph commands & container
+- `pnpm graph:supply-chain` — generate the graph (→ `docs/ai-supply-chain/knowledge-graph.json`).
+- `pnpm graph:supply-chain:check` — validate + drift check (runs in CI).
+- `Dockerfile` + `.dockerignore` — containerised generator. Build/run:
+  ```bash
+  docker build -t supply-chain-graph .
+  docker run --rm -v "$PWD/out:/out" supply-chain-graph   # → out/knowledge-graph.json
+  ```
+  Multi-stage: the builder installs only the `@understand-anything/core` subtree (zod + web-tree-sitter, no native toolchain) and compiles the schema; the runtime runs the deterministic generator, writing to the `/out` volume. Override args after the image name (e.g. `--out /out/graph.json`).
 
 ## Versioning
 When pushing to remote, bump the version in **all five** of these files (keep them in sync):

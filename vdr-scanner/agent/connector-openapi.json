@@ -11,6 +11,42 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
+    "/resolve-drive": {
+      "post": {
+        "operationId": "resolveDrive",
+        "summary": "Resolve a pasted SharePoint URL to its backing drive",
+        "description": "Accepts any SharePoint site, library, or folder URL the user pastes in chat and resolves it via the Graph shares API. Call this first whenever the user provides a link.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["url"],
+              "properties": {
+                "url": { "type": "string", "description": "The SharePoint URL exactly as pasted by the user" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resolved drive",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "driveId": { "type": "string" },
+                "itemId": { "type": "string" },
+                "name": { "type": "string", "description": "Library or folder display name — echo this back to the user for confirmation" },
+                "webUrl": { "type": "string" }
+              }
+            }
+          },
+          "400": { "description": "Not a resolvable library/folder URL; the error message says why (single file, malformed link, or no app access)" }
+        }
+      }
+    },
     "/refresh-enumeration": {
       "post": {
         "operationId": "refreshEnumeration",
@@ -23,9 +59,9 @@
             "required": true,
             "schema": {
               "type": "object",
-              "required": ["driveId"],
               "properties": {
-                "driveId": { "type": "string", "description": "Graph drive id of the VDR document library" }
+                "driveId": { "type": "string", "description": "Graph drive id of the VDR document library (from resolveDrive)" },
+                "sharePointUrl": { "type": "string", "description": "Alternative to driveId: a SharePoint library URL; the endpoint resolves it internally" }
               }
             }
           }

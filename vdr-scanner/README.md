@@ -12,9 +12,20 @@ before the scan may report success. Copilot's knowledge/retrieval layer is
 deliberately **not** used for scanning: top-k retrieval samples, it never
 covers.
 
+## Chat UX
+
+The intended experience in Microsoft 365 Copilot / Teams is: **paste a
+SharePoint library link, done.** The agent resolves the URL to its backing
+Graph drive via the shares API (`src/resolveDrive.ts` — works for site,
+library, and folder links without tenant-specific URL parsing), confirms the
+library name, starts the scan, and answers "status" and "gap report" from the
+reconciliation tables while large scans continue server-side.
+
 ## Architecture
 
 ```
+User pastes SharePoint URL ──► resolveDrive (shares API → driveId)
+   │
 Trigger (recurrence / file event)
    │
    ▼
@@ -39,6 +50,7 @@ retry, accounting). Neither is allowed to do the other's job.
 | Path | What it is |
 |---|---|
 | `src/graphClient.ts` | Graph HTTP wrapper: Retry-After on 429/503, 410 → explicit resync signal |
+| `src/resolveDrive.ts` | Pasted SharePoint URL → backing drive, via the Graph shares API |
 | `src/deltaWalker.ts` | Full + incremental delta enumeration with checkpoint (`@odata.deltaLink`) |
 | `src/inventory.ts` | Work-queue inventory: upsert by id, batching, 3-strike errors, reconciliation, JSON persistence |
 | `src/classifier.ts` | `Classifier` interface, classification JSON Schema, strict output validator |

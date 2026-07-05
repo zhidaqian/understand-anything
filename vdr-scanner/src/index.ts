@@ -21,3 +21,5 @@ export { runScan } from './scanner.js';
 export type { ScanOptions, ScanReport } from './scanner.js';
 export { analyzeGaps, renderGapReportMarkdown } from './gap.js';
 export type { GapOptions } from './gap.js';
+export { encodeShareUrl, resolveDriveFromUrl } from './resolveDrive.js';
+export type { ResolvedDrive } from './resolveDrive.js';

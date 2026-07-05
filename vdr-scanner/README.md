@@ -57,6 +57,7 @@ retry, accounting). Neither is allowed to do the other's job.
 | `src/scanner.ts` | One scan cycle: enumerate → drain queue → prove coverage (throws if the books don't balance) |
 | `src/gap.ts` | IRL gap analysis as a deterministic join + markdown report renderer |
 | `agent/instructions.md` | System prompt for the Copilot Studio autonomous agent |
+| `agent/m365-copilot-app/` | Declarative-agent manifests for the M365 Copilot app (no Copilot Studio) |
 | `agent/classify-document-prompt.md` | The `classify_document` prompt tool |
 | `agent/connector-openapi.json` | Swagger 2.0 custom-connector spec for the six tools |
 | `irl/sample-irl.json` | Sample M&A IRL taxonomy (replace with the deal's real IRL) |
@@ -79,7 +80,18 @@ Run from the repo root: `pnpm test` (suite lives at `tests/vdr-scanner/`).
 - IRL gap analysis separates satisfied / weak-evidence / hard-gap /
   optional-missing items and lists unmapped and errored files.
 
-## Deploying to Microsoft 365
+## Two deployment modes
+
+- **Copilot Studio agent** (below): the agent can drive the classification
+  loop itself via a prompt tool, and owns autonomous triggers.
+- **M365 Copilot app declarative agent** (`agent/m365-copilot-app/`): no
+  Copilot Studio required. The agent is a chat-only front end over four
+  actions (`resolveDrive`, `startScan`, `reconcile`, `gapReport`); the scan
+  loop and the classification LLM calls live entirely in the host, and
+  freshness comes from a Function timer trigger. See that folder's README
+  for the trade-offs and packaging steps.
+
+## Deploying to Microsoft 365 (Copilot Studio mode)
 
 1. **Entra app**: application permissions `Sites.Selected` (grant on the VDR
    site) or `Sites.Read.All` + `Files.Read.All`; client-credentials flow.

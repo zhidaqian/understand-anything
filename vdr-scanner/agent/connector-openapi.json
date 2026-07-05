@@ -47,6 +47,39 @@
         }
       }
     },
+    "/start-scan": {
+      "post": {
+        "operationId": "startScan",
+        "summary": "Start (or resume) a full server-side scan of a drive",
+        "description": "Kicks off enumeration plus the classification drain loop in the host and returns immediately. Chat-only front ends (M365 Copilot app declarative agents) use this instead of driving the batch loop themselves; poll reconcile for progress.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "driveId": { "type": "string", "description": "Graph drive id (from resolveDrive)" },
+                "sharePointUrl": { "type": "string", "description": "Alternative to driveId: a SharePoint library URL, resolved internally" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Scan started or already running",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["started", "already-running"] },
+                "reconciliation": { "$ref": "#/definitions/Reconciliation" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/refresh-enumeration": {
       "post": {
         "operationId": "refreshEnumeration",

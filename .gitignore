@@ -6,6 +6,7 @@ dist
 .env
 .env.*
 coverage/
+node-compile-cache/
 *.log
 __pycache__/
 .claude/

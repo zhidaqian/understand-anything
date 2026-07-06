@@ -1,0 +1,21 @@
+{
+  "name": "vdr-scanner",
+  "version": "1.0.0",
+  "description": "Exhaustive SharePoint virtual-data-room scanner with IRL gap analysis. Runs as a one-line CLI or backs a Copilot agent.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "scan-vdr": "dist/run/scan-vdr.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "scan": "node dist/run/scan-vdr.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}

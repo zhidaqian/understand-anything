@@ -1,0 +1,270 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "VDR Scanner Tools",
+    "description": "Deterministic tools for the VDR Scanner Copilot Studio agent. Host vdr-scanner/src behind these routes (e.g. an Azure Function app); the agent supplies judgment, these endpoints supply guarantees.",
+    "version": "1.0.0"
+  },
+  "host": "REPLACE-WITH-YOUR-FUNCTION-APP.azurewebsites.net",
+  "basePath": "/api",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/resolve-drive": {
+      "post": {
+        "operationId": "resolveDrive",
+        "summary": "Resolve a pasted SharePoint URL to its backing drive",
+        "description": "Accepts any SharePoint site, library, or folder URL the user pastes in chat and resolves it via the Graph shares API. Call this first whenever the user provides a link.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["url"],
+              "properties": {
+                "url": { "type": "string", "description": "The SharePoint URL exactly as pasted by the user" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resolved drive",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "driveId": { "type": "string" },
+                "itemId": { "type": "string" },
+                "name": { "type": "string", "description": "Library or folder display name — echo this back to the user for confirmation" },
+                "webUrl": { "type": "string" }
+              }
+            }
+          },
+          "400": { "description": "Not a resolvable library/folder URL; the error message says why (single file, malformed link, or no app access)" }
+        }
+      }
+    },
+    "/start-scan": {
+      "post": {
+        "operationId": "startScan",
+        "summary": "Start (or resume) a full server-side scan of a drive",
+        "description": "Kicks off enumeration plus the classification drain loop in the host and returns immediately. Chat-only front ends (M365 Copilot app declarative agents) use this instead of driving the batch loop themselves; poll reconcile for progress.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "driveId": { "type": "string", "description": "Graph drive id (from resolveDrive)" },
+                "sharePointUrl": { "type": "string", "description": "Alternative to driveId: a SharePoint library URL, resolved internally" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Scan started or already running",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["started", "already-running"] },
+                "reconciliation": { "$ref": "#/definitions/Reconciliation" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh-enumeration": {
+      "post": {
+        "operationId": "refreshEnumeration",
+        "summary": "Sync the file inventory via Graph delta enumeration",
+        "description": "Runs walkDelta from the saved checkpoint (full walk on first run), upserting every file into the inventory. Returns enumeration stats and the reconciliation snapshot.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "driveId": { "type": "string", "description": "Graph drive id of the VDR document library (from resolveDrive)" },
+                "sharePointUrl": { "type": "string", "description": "Alternative to driveId: a SharePoint library URL; the endpoint resolves it internally" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Enumeration result",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pages": { "type": "integer" },
+                "items": { "type": "integer" },
+                "resyncs": { "type": "integer" },
+                "reconciliation": { "$ref": "#/definitions/Reconciliation" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pending-batch": {
+      "post": {
+        "operationId": "getPendingBatch",
+        "summary": "Take the next batch of unprocessed files",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "batchSize": { "type": "integer", "default": 20 }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending files with extracted text content",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "path": { "type": "string" },
+                  "content": { "type": "string", "description": "Extracted text, chunked/truncated to the prompt budget" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mark-done": {
+      "post": {
+        "operationId": "markDone",
+        "summary": "Record a file's classification and mark it processed",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["fileId", "classification"],
+              "properties": {
+                "fileId": { "type": "string" },
+                "classification": {
+                  "type": "object",
+                  "description": "JSON conforming to CLASSIFICATION_JSON_SCHEMA; the endpoint validates via parseClassification and rejects malformed output"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Recorded" },
+          "400": { "description": "Classification failed validation; retry the prompt or call markError" }
+        }
+      }
+    },
+    "/mark-error": {
+      "post": {
+        "operationId": "markError",
+        "summary": "Record a processing failure for a file (3 strikes then error status)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["fileId", "message"],
+              "properties": {
+                "fileId": { "type": "string" },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Outcome",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "outcome": { "type": "string", "enum": ["retry", "failed"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reconcile": {
+      "get": {
+        "operationId": "reconcile",
+        "summary": "Coverage accounting: done + error must equal enumerated",
+        "responses": {
+          "200": {
+            "description": "Reconciliation snapshot",
+            "schema": { "$ref": "#/definitions/Reconciliation" }
+          }
+        }
+      }
+    },
+    "/gap-report": {
+      "get": {
+        "operationId": "gapReport",
+        "summary": "IRL gap analysis over the classified inventory",
+        "responses": {
+          "200": {
+            "description": "Gap report (analyzeGaps output plus rendered markdown)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gapsCount": { "type": "integer" },
+                "weakCount": { "type": "integer" },
+                "satisfiedCount": { "type": "integer" },
+                "unmappedCount": { "type": "integer" },
+                "errorCount": { "type": "integer" },
+                "markdown": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Reconciliation": {
+      "type": "object",
+      "properties": {
+        "enumerated": { "type": "integer" },
+        "pending": { "type": "integer" },
+        "done": { "type": "integer" },
+        "error": { "type": "integer" },
+        "removed": { "type": "integer" },
+        "complete": { "type": "boolean" }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-functions-key"
+    }
+  },
+  "security": [{ "apiKey": [] }]
+}

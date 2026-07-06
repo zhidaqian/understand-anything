@@ -1,0 +1,23 @@
+{
+  "$comment": "Sample M&A information request list. Replace with the deal's actual IRL; ids are what classify_document maps documents onto.",
+  "items": [
+    { "id": "CORP-01", "category": "Corporate", "title": "Charter documents", "description": "Articles/certificate of incorporation, bylaws, and all amendments", "required": true },
+    { "id": "CORP-02", "category": "Corporate", "title": "Cap table and shareholder register", "description": "Current capitalization table, option pool, warrants, convertible instruments", "required": true },
+    { "id": "CORP-03", "category": "Corporate", "title": "Board and shareholder minutes", "description": "Minutes and written consents for the last 3 years", "required": true },
+    { "id": "FIN-01", "category": "Financial", "title": "Audited financial statements", "description": "Audited annual financial statements for the last 3 fiscal years", "required": true },
+    { "id": "FIN-02", "category": "Financial", "title": "Management accounts", "description": "Monthly or quarterly management accounts for the current fiscal year", "required": true },
+    { "id": "FIN-03", "category": "Financial", "title": "Budget and forecasts", "description": "Current-year budget and any multi-year forecasts or business plans", "required": false },
+    { "id": "TAX-01", "category": "Tax", "title": "Tax returns", "description": "Federal/national and state/local income tax returns for the last 3 years", "required": true },
+    { "id": "TAX-02", "category": "Tax", "title": "Tax audits and disputes", "description": "Correspondence regarding audits, assessments, or ongoing tax disputes", "required": false },
+    { "id": "COM-01", "category": "Commercial", "title": "Material customer contracts", "description": "Contracts with top-20 customers by revenue, including amendments and SOWs", "required": true },
+    { "id": "COM-02", "category": "Commercial", "title": "Material supplier contracts", "description": "Contracts with critical suppliers and any sole-source arrangements", "required": true },
+    { "id": "HR-01", "category": "HR", "title": "Key employment agreements", "description": "Employment agreements for executives and key employees, incl. change-of-control terms", "required": true },
+    { "id": "HR-02", "category": "HR", "title": "Benefit and incentive plans", "description": "Equity incentive plans, bonus schemes, pension/retirement plans", "required": true },
+    { "id": "IP-01", "category": "IP", "title": "Registered IP schedule", "description": "Patents, trademarks, registered designs and domains, with registration numbers", "required": true },
+    { "id": "IP-02", "category": "IP", "title": "IP assignments and licenses", "description": "Inbound/outbound license agreements and employee/contractor IP assignments", "required": true },
+    { "id": "LIT-01", "category": "Litigation", "title": "Litigation summary", "description": "Pending, threatened, or settled litigation and regulatory proceedings, last 5 years", "required": true },
+    { "id": "REG-01", "category": "Regulatory", "title": "Licenses and permits", "description": "Material operating licenses, permits, and evidence of regulatory compliance", "required": true },
+    { "id": "IT-01", "category": "IT & Data", "title": "Data protection compliance", "description": "Privacy policies, processing registers, breach history, DPA templates", "required": false },
+    { "id": "INS-01", "category": "Insurance", "title": "Insurance policies", "description": "Schedule of insurance policies with coverage limits and claims history", "required": false }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.1/schema.json",
+  "schema_version": "v2.1",
+  "name_for_human": "VDR Scanner Tools",
+  "description_for_human": "Resolve SharePoint links, run exhaustive data-room scans, and fetch IRL gap reports.",
+  "description_for_model": "Deterministic tools for scanning a SharePoint-hosted virtual data room. resolveDrive turns a pasted SharePoint URL into a drive id. startScan launches the server-side enumeration and classification loop and returns immediately. reconcile reports coverage accounting (done + error must equal enumerated; complete=true means the scan is finished and provable). gapReport returns the IRL gap analysis and a markdown report. Never fabricate results; these tools are the only source of truth about the data room.",
+  "namespace": "vdrscanner",
+  "functions": [
+    {
+      "name": "resolveDrive",
+      "description": "Resolve a pasted SharePoint site, library, or folder URL to its backing Graph drive. Call this first whenever the user provides a link. Returns driveId and the library display name to confirm back to the user."
+    },
+    {
+      "name": "startScan",
+      "description": "Start or resume the server-side scan (enumeration + classification) for a drive. Returns immediately with 'started' or 'already-running' plus a reconciliation snapshot."
+    },
+    {
+      "name": "reconcile",
+      "description": "Get the coverage accounting for the current scan: enumerated, pending, done, error, removed, and complete. The scan is finished only when complete is true."
+    },
+    {
+      "name": "gapReport",
+      "description": "Get the IRL gap analysis over the classified inventory: hard gaps, weak-evidence items, satisfied items, unmapped files, errored files, and a rendered markdown report. Only meaningful once reconcile reports complete."
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "ApiKeyPluginVault",
+        "reference_id": "REPLACE-WITH-KEY-REGISTRATION-ID"
+      },
+      "spec": {
+        "url": "connector-openapi.json"
+      },
+      "run_for_functions": ["resolveDrive", "startScan", "reconcile", "gapReport"]
+    }
+  ]
+}
